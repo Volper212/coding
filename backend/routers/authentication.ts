@@ -1,15 +1,11 @@
-import type { Database } from "backend/database";
 import { makeRouter, publicProcedure } from "backend/trpc";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import { v4 as generateId } from "uuid";
-import makeUserProcedure, { makeGetLoggedIn } from "backend/userProdecure";
+import type Dependencies from "backend/dependencies";
 
-function makeAuthenticationRouter(database: Database) {
-    const userProcedure = makeUserProcedure(database);
-    const getLoggedIn = makeGetLoggedIn(database);
-
-    return makeRouter({
+const makeAuthenticationRouter = ({ database, userProcedure, getLoggedIn }: Dependencies) =>
+    makeRouter({
         register: publicProcedure
             .input(
                 z.object({
@@ -60,6 +56,5 @@ function makeAuthenticationRouter(database: Database) {
             res.clearCookie("token");
         }),
     });
-}
 
 export default makeAuthenticationRouter;
