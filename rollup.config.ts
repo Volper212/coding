@@ -2,7 +2,7 @@ import svelte from "rollup-plugin-svelte";
 import resolve from "@rollup/plugin-node-resolve";
 import css from "rollup-plugin-css-only";
 import sveltePreprocess from "svelte-preprocess";
-import typescript from "rollup-plugin-typescript2";
+import typescript from "@rollup/plugin-typescript";
 import commonjs from "@rollup/plugin-commonjs";
 import alias from "@rollup/plugin-alias";
 
@@ -24,7 +24,9 @@ export default {
             preprocess: sveltePreprocess(),
         }),
         resolve({ browser: true }),
-        typescript(),
+        typescript({
+            sourceMap: isDev,
+        }),
         css({
             output: "bundle.css",
         }),
