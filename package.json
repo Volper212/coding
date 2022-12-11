@@ -8,6 +8,7 @@
         "dev:backend": "node-dev -r tsconfig-paths/register ./backend/app.ts"
     },
     "dependencies": {
+        "@rollup/plugin-alias": "^4.0.2",
         "@rollup/plugin-commonjs": "^23.0.4",
         "@rollup/plugin-node-resolve": "^15.0.1",
         "@rollup/plugin-typescript": "^10.0.1",

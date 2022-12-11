@@ -4,6 +4,7 @@ import css from "rollup-plugin-css-only";
 import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
 import commonjs from "@rollup/plugin-commonjs";
+import alias from "@rollup/plugin-alias";
 
 const isDev = process.argv.includes("-cw");
 
@@ -27,6 +28,9 @@ export default {
         }),
         commonjs({
             transformMixedEsModules: true,
+        }),
+        alias({
+            entries: [{ find: "frontend", replacement: "./frontend" }],
         }),
     ],
 };

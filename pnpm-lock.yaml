@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@rollup/plugin-alias': ^4.0.2
   '@rollup/plugin-commonjs': ^23.0.4
   '@rollup/plugin-node-resolve': ^15.0.1
   '@rollup/plugin-typescript': ^10.0.1
@@ -36,6 +37,7 @@ specifiers:
   zod: ^3.19.1
 
 dependencies:
+  '@rollup/plugin-alias': 4.0.2_rollup@3.7.2
   '@rollup/plugin-commonjs': 23.0.4_rollup@3.7.2
   '@rollup/plugin-node-resolve': 15.0.1_rollup@3.7.2
   '@rollup/plugin-typescript': 10.0.1_yeegydsjve3bk6zc5nb3gtx4bi
@@ -915,6 +917,19 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
+
+  /@rollup/plugin-alias/4.0.2_rollup@3.7.2:
+    resolution: {integrity: sha512-1hv7dBOZZwo3SEupxn4UA2N0EDThqSSS+wI1St1TNTBtOZvUchyIClyHcnDcjjrReTPZ47Faedrhblv4n+T5UQ==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      rollup: 3.7.2
+      slash: 4.0.0
     dev: false
 
   /@rollup/plugin-commonjs/23.0.4_rollup@3.7.2:
@@ -2793,6 +2808,11 @@ packages:
 
   /signal-exit/3.0.7:
     resolution: {integrity: sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==}
+    dev: false
+
+  /slash/4.0.0:
+    resolution: {integrity: sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==}
+    engines: {node: '>=12'}
     dev: false
 
   /smart-buffer/4.2.0:
