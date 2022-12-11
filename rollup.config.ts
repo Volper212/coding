@@ -17,6 +17,10 @@ export default {
     },
     plugins: [
         svelte({
+            onwarn(warning, handler) {
+                if (warning.code === "css-unused-selector") return;
+                handler(warning);
+            },
             preprocess: sveltePreprocess(),
         }),
         resolve({ browser: true }),
