@@ -5,7 +5,7 @@
         "start:backend": "ts-node -r tsconfig-paths/register backend/app.ts",
         "dev": "run-p dev:*",
         "dev:frontend": "rollup -cw --configPlugin typescript",
-        "dev:backend": "node-dev -r tsconfig-paths/register ./backend/app.ts"
+        "dev:backend": "node-dev --max_old_space_size=8192 -r tsconfig-paths/register ./backend/app.ts"
     },
     "dependencies": {
         "@rollup/plugin-alias": "^4.0.2",
