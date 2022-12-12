@@ -2,8 +2,8 @@
     import api from "frontend/api";
 
     export let switchPage: () => void;
-    let username: string;
-    let password: string;
+    let username: string = "";
+    let password: string = "";
 
     async function login() {
         const message = await api.authentication.login.mutate({ username, password });
