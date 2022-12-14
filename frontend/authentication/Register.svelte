@@ -21,9 +21,9 @@
 </script>
 
 <form on:submit|preventDefault={register}>
-    <input type="text" bind:value={username} required />
-    <input type="password" bind:value={password} />
-    <input type="password" bind:value={repeatedPassword} />
+    <input type="text" bind:value={username} required autocomplete="username" />
+    <input type="password" bind:value={password} autocomplete="new-password" />
+    <input type="password" bind:value={repeatedPassword} autocomplete="new-password" />
     <button type="submit">Zarejestruj</button>
 </form>
 <a href="/" use:link>Zaloguj się</a>

@@ -16,8 +16,8 @@
 </script>
 
 <form on:submit|preventDefault={login}>
-    <input type="text" bind:value={username} required />
-    <input type="password" bind:value={password} />
+    <input type="text" bind:value={username} required autocomplete="username" />
+    <input type="password" bind:value={password} autocomplete="current-password" />
     <button type="submit">Zaloguj</button>
 </form>
 <a href="/register" use:link>Utwórz konto</a>
