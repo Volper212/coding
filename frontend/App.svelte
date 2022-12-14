@@ -1,16 +1,20 @@
 <script lang="ts">
     import Authentication from "./authentication/Authentication.svelte";
     import Home from "./Home.svelte";
-    import api from "./api";
-    import { Router } from "svelte-routing";
+
+    export let user: string | undefined;
+
+    function setUser(newUser: string) {
+        user = newUser;
+    }
+
+    function unsetUser() {
+        user = undefined;
+    }
 </script>
 
-<Router>
-    {#await api.authentication.loggedInUser.query() then user}
-        {#if user}
-            <Home {user} />
-        {:else}
-            <Authentication />
-        {/if}
-    {/await}
-</Router>
+{#if user}
+    <Home {user} {unsetUser} />
+{:else}
+    <Authentication {setUser} />
+{/if}

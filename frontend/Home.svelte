@@ -3,7 +3,8 @@
     import Navigation from "./Navigation.svelte";
 
     export let user: string;
+    export let unsetUser: () => void;
 </script>
 
-<Header {user} />
+<Header {user} {unsetUser} />
 <Navigation />

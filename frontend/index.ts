@@ -1,5 +1,5 @@
-import App from "./App.svelte";
+import EntryPoint from "./EntryPoint.svelte";
 
-new App({
+new EntryPoint({
     target: document.body,
 });

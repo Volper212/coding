@@ -2,6 +2,8 @@
     import api from "frontend/api";
     import { link } from "svelte-routing";
 
+    export let setUser: (newUser: string) => void;
+
     let username = "";
     let password = "";
     let repeatedPassword = "";
@@ -16,7 +18,7 @@
             alert(message);
             return;
         }
-        location.reload();
+        setUser(username);
     }
 </script>
 

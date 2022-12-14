@@ -2,11 +2,13 @@
     import { Route } from "svelte-routing";
     import Login from "./Login.svelte";
     import Register from "./Register.svelte";
+
+    export let setUser: (newUser: string) => void;
 </script>
 
-<Route path="/">
-    <Login />
+<Route>
+    <Login {setUser} />
 </Route>
 <Route path="/register">
-    <Register />
+    <Register {setUser} />
 </Route>

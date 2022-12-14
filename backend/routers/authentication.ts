@@ -2,9 +2,10 @@ import { makeRouter, publicProcedure } from "backend/trpc";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import { v4 as generateId } from "uuid";
-import type Dependencies from "backend/dependencies";
+import type { Database } from "backend/database";
+import type { GetLoggedIn } from "backend/util/getLoggedIn";
 
-const makeAuthenticationRouter = ({ database, userProcedure, getLoggedIn }: Dependencies) =>
+const makeAuthenticationRouter = (database: Database, getLoggedIn: GetLoggedIn) =>
     makeRouter({
         register: publicProcedure
             .input(
@@ -51,9 +52,11 @@ const makeAuthenticationRouter = ({ database, userProcedure, getLoggedIn }: Depe
 
         loggedInUser: publicProcedure.query(async ({ ctx }) => (await getLoggedIn(ctx))?.username),
 
-        logout: userProcedure.mutation(async ({ ctx: { token, res } }) => {
+        logout: publicProcedure.mutation(async ({ ctx }) => {
+            const user = await getLoggedIn(ctx);
+            if (user === undefined) return;
+            const { token } = user;
             await database.sessions.deleteOne({ token });
-            res.clearCookie("token");
         }),
     });
 

@@ -2,14 +2,19 @@ import express from "express";
 import { makeRouter, makeTRPCExpressMiddleware } from "./trpc";
 import dotenv from "dotenv";
 import makeAuthenticationRouter from "./routers/authentication";
-import { prepareDependencies } from "./dependencies";
 import type { AwaitableReturnType } from "./util/AwaitableReturnType";
+import getDatabase from "./database";
+import makeGetLoggedIn from "./util/getLoggedIn";
+import makeUserProcedure from "./util/userProdecure";
 
 async function main() {
-    const dependencies = await prepareDependencies();
+    const database = await getDatabase();
+    const getLoggedIn = makeGetLoggedIn(database);
+    const userProcedure = makeUserProcedure(getLoggedIn);
+    const dependencies = { database, userProcedure };
 
     const router = makeRouter({
-        authentication: makeAuthenticationRouter(dependencies),
+        authentication: makeAuthenticationRouter(database, getLoggedIn),
     });
 
     const app = express();
