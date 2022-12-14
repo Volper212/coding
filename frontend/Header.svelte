@@ -5,11 +5,11 @@
     export let user: string;
     export let unsetUser: () => void;
 
-    async function logout() {
-        await api.authentication.logout.mutate();
+    async function logOut() {
+        await api.authentication.logOut.mutate();
         unsetUser();
     }
 </script>
 
 <h1>Witaj {user}!</h1>
-<a href="/" use:link on:click={logout}>Wyloguj</a>
+<a href="/" use:link on:click={logOut}>Wyloguj</a>

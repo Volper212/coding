@@ -31,7 +31,7 @@ const makeAuthenticationRouter = (database: Database, getLoggedIn: GetLoggedIn) 
                 res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 24 * 30, httpOnly: true });
             }),
 
-        login: publicProcedure
+        logIn: publicProcedure
             .input(
                 z.object({
                     username: z.string().min(1),
@@ -52,7 +52,7 @@ const makeAuthenticationRouter = (database: Database, getLoggedIn: GetLoggedIn) 
 
         loggedInUser: publicProcedure.query(async ({ ctx }) => (await getLoggedIn(ctx))?.username),
 
-        logout: publicProcedure.mutation(async ({ ctx }) => {
+        logOut: publicProcedure.mutation(async ({ ctx }) => {
             const user = await getLoggedIn(ctx);
             if (user === undefined) return;
             const { token } = user;
