@@ -1,13 +1,12 @@
 <script lang="ts">
+    import { Route } from "svelte-routing";
     import Login from "./Login.svelte";
     import Register from "./Register.svelte";
-
-    let isLogin = true;
-    $: Page = isLogin ? Login : Register;
-
-    function switchPage() {
-        isLogin = !isLogin;
-    }
 </script>
 
-<svelte:component this={Page} {switchPage} />
+<Route path="/">
+    <Login />
+</Route>
+<Route path="/register">
+    <Register />
+</Route>

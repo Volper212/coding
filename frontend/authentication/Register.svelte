@@ -1,10 +1,10 @@
 <script lang="ts">
     import api from "frontend/api";
+    import { link } from "svelte-routing";
 
-    export let switchPage: () => void;
-    let username: string;
-    let password: string;
-    let repeatedPassword: string;
+    let username = "";
+    let password = "";
+    let repeatedPassword = "";
 
     async function register() {
         if (password !== repeatedPassword) {
@@ -22,8 +22,8 @@
 
 <form on:submit|preventDefault={register}>
     <input type="text" bind:value={username} required />
-    <input type="password" bind:value={password} required />
-    <input type="password" bind:value={repeatedPassword} required />
+    <input type="password" bind:value={password} />
+    <input type="password" bind:value={repeatedPassword} />
     <button type="submit">Zarejestruj</button>
 </form>
-<button type="button" on:click={switchPage}>Zaloguj się</button>
+<a href="/" use:link>Zaloguj się</a>

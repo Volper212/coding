@@ -9,7 +9,7 @@ const makeAuthenticationRouter = ({ database, userProcedure, getLoggedIn }: Depe
         register: publicProcedure
             .input(
                 z.object({
-                    username: z.string(),
+                    username: z.string().min(1),
                     password: z.string(),
                 })
             )
@@ -33,7 +33,7 @@ const makeAuthenticationRouter = ({ database, userProcedure, getLoggedIn }: Depe
         login: publicProcedure
             .input(
                 z.object({
-                    username: z.string(),
+                    username: z.string().min(1),
                     password: z.string(),
                 })
             )

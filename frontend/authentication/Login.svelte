@@ -1,9 +1,9 @@
 <script lang="ts">
     import api from "frontend/api";
+    import { link } from "svelte-routing";
 
-    export let switchPage: () => void;
-    let username: string = "";
-    let password: string = "";
+    let username = "";
+    let password = "";
 
     async function login() {
         const message = await api.authentication.login.mutate({ username, password });
@@ -16,8 +16,8 @@
 </script>
 
 <form on:submit|preventDefault={login}>
-    <input type="text" bind:value={username} />
+    <input type="text" bind:value={username} required />
     <input type="password" bind:value={password} />
     <button type="submit">Zaloguj</button>
 </form>
-<button type="button" on:click={switchPage}>Utwórz konto</button>
+<a href="/register" use:link>Utwórz konto</a>
