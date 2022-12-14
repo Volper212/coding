@@ -1,5 +1,6 @@
 <script lang="ts">
     import api from "./api";
+
     export let user: string;
 
     async function logout() {
