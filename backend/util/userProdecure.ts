@@ -7,7 +7,8 @@ const makeUserProcedure = (getLoggedIn: GetLoggedIn) =>
         middleware(async ({ ctx, next }) => {
             const loggedIn = await getLoggedIn(ctx);
             if (loggedIn === undefined) throw new TRPCError({ code: "UNAUTHORIZED" });
-            return next({ ctx: loggedIn.username });
+            const { username } = loggedIn;
+            return next({ ctx: { username } });
         })
     );
 

@@ -6,6 +6,7 @@ import type { AwaitableReturnType } from "./util/AwaitableReturnType";
 import getDatabase from "./database";
 import makeGetLoggedIn from "./util/getLoggedIn";
 import makeUserProcedure from "./util/userProdecure";
+import makeExampleRouter from "./routers/example";
 
 async function main() {
     const database = await getDatabase();
@@ -15,6 +16,7 @@ async function main() {
 
     const router = makeRouter({
         authentication: makeAuthenticationRouter(database, getLoggedIn),
+        example: makeExampleRouter(dependencies),
     });
 
     const app = express();
