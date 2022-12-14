@@ -4,9 +4,10 @@ import bcrypt from "bcrypt";
 import { v4 as generateId } from "uuid";
 import type { Database } from "backend/database";
 import type { GetLoggedIn } from "backend/util/getLoggedIn";
+import type express from "express";
 
-const makeAuthenticationRouter = (database: Database, getLoggedIn: GetLoggedIn) =>
-    makeRouter({
+export default function makeAuthenticationRouter(database: Database, getLoggedIn: GetLoggedIn) {
+    return makeRouter({
         register: publicProcedure
             .input(
                 z.object({
@@ -17,18 +18,13 @@ const makeAuthenticationRouter = (database: Database, getLoggedIn: GetLoggedIn) 
             .mutation(async ({ input: { username, password }, ctx: { res } }) => {
                 if (await database.users.findOne({ username }))
                     return "Nazwa użytkownika jest zajęta";
-                const token = generateId();
                 await Promise.all([
                     database.users.insertOne({
                         username,
                         passwordHash: await bcrypt.hash(password, 10),
                     }),
-                    database.sessions.insertOne({
-                        username,
-                        token,
-                    }),
+                    logIn(res, username),
                 ]);
-                res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 24 * 30, httpOnly: true });
             }),
 
         logIn: publicProcedure
@@ -42,12 +38,7 @@ const makeAuthenticationRouter = (database: Database, getLoggedIn: GetLoggedIn) 
                 const user = await database.users.findOne({ username });
                 if (user == null || !(await bcrypt.compare(password, user.passwordHash)))
                     return "Niepoprawna nazwa użytkownika lub hasło";
-                const token = generateId();
-                await database.sessions.insertOne({
-                    username,
-                    token,
-                });
-                res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 24 * 30, httpOnly: true });
+                await logIn(res, username);
             }),
 
         loggedInUser: publicProcedure.query(async ({ ctx }) => (await getLoggedIn(ctx))?.username),
@@ -60,4 +51,12 @@ const makeAuthenticationRouter = (database: Database, getLoggedIn: GetLoggedIn) 
         }),
     });
 
-export default makeAuthenticationRouter;
+    async function logIn(res: express.Response, username: string) {
+        const token = generateId();
+        await database.sessions.insertOne({
+            username,
+            token,
+        });
+        res.cookie("token", token, { maxAge: 1000 * 60 * 60 * 24 * 30, httpOnly: true });
+    }
+}
