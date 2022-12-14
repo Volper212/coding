@@ -1,11 +1,11 @@
 <script lang="ts">
     import { Route, link } from "svelte-routing";
-    import Test from "./routes/Test.svelte";
+    import Example from "./routes/Example.svelte";
 </script>
 
 <Route path="/">
-    <a href="/test" use:link>Test</a>
+    <a href="/example" use:link>Przykład</a>
 </Route>
-<Route path="/test">
-    <Test />
+<Route path="/example">
+    <Example />
 </Route>
