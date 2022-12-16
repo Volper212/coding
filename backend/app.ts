@@ -7,6 +7,9 @@ import getDatabase from "./database";
 import makeGetLoggedIn from "./util/getLoggedIn";
 import makeUserProcedure from "./util/userProdecure";
 import makeExampleRouter from "./routers/example";
+import { PuzzleType } from "../shared/types";
+import { z } from "zod";
+import { Db } from "mongodb";
 
 async function main() {
     const database = await getDatabase();
@@ -16,9 +19,26 @@ async function main() {
     const router = makeRouter({
         authentication: makeAuthenticationRouter(database, getLoggedIn),
         example: makeExampleRouter(dependencies),
-        //startPuzzle: userProcedure.mutation(() => {
-        //    database.puzzles.find();
-        //}),
+        createPuzzle: userProcedure
+            .input(
+                z
+                    .object({
+                        type: z.literal(PuzzleType.FindBug),
+                        description: z.string(),
+                        code: z.string(),
+                        bugLine: z.number(),
+                    })
+                    .or(z.object({ type: z.literal(PuzzleType.WriteProgram) }))
+                    .or(z.object({ type: z.literal(PuzzleType.FillGap) }))
+                    .or(z.object({ type: z.literal(PuzzleType.WhatResult) }))
+            )
+            .query(async ({ ctx: { username }, input }) => {
+                await database.puzzles.insertOne({
+                    author: username,
+                    ...input,
+                    rating: 1000,
+                });
+            }),
     });
 
     const app = express();

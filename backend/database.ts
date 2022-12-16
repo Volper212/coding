@@ -28,8 +28,9 @@ type Session = {
     token: string;
 };
 
-type Puzzle = {
+export type Puzzle = {
     rating: number;
+    author: string;
 } & (
     | {
           type: PuzzleType.FindBug;
