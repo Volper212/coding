@@ -9,8 +9,9 @@ import makeUserProcedure from "./util/userProdecure";
 import makeExampleRouter from "./routers/example";
 import { PuzzleType } from "../shared/types";
 import { z } from "zod";
+import type { WithId } from "mongodb";
 
-const flatness = 10;
+const flatness = 100;
 
 export const rawPuzzle = z
     .object({
@@ -22,7 +23,6 @@ export const rawPuzzle = z
     .or(
         z.object({
             type: z.literal(PuzzleType.WriteProgram),
-            
         })
     )
     .or(
@@ -44,11 +44,7 @@ async function main() {
         authentication: makeAuthenticationRouter(database, getLoggedIn),
         example: makeExampleRouter(dependencies),
         createPuzzle: userProcedure
-            .input(
-                z.object({ title: z.string().min(1).max(20) }).and(
-                    rawPuzzle
-                )
-            )
+            .input(z.object({ title: z.string().min(1).max(20) }).and(rawPuzzle))
             .query(async ({ ctx: { username }, input }) => {
                 await database.puzzles.insertOne({
                     author: username,
@@ -59,21 +55,32 @@ async function main() {
         startPuzzle: userProcedure.query(async ({ ctx: { username } }) => {
             const user = await database.users.findOne({ username });
             if (user == null) throw new Error("User not found");
-            let chance: number;
-            let puzzle: Puzzle;
             while (true) {
-                const puzzleOption = await database.puzzles.findOne({ $sample: { size: 1 } });
-                if (puzzleOption == null) return;
-                puzzle = puzzleOption;
+                const puzzle = (await database.puzzles
+                    .aggregate([{ $sample: { size: 1 } }])
+                    .next()) as WithId<Puzzle> | null;
+                if (puzzle == null) return;
                 const ratingDifference = puzzle.rating - user.rating;
                 const probability = Math.exp(-0.5 * (ratingDifference / flatness) ** 2) / flatness; // Normal distribution
-                console.log(probability);
-                break;
+                if (Math.random() < probability * 30) {
+                    const { rating, author, ...rawPuzzle } = puzzle;
+                    switch (rawPuzzle.type) {
+                        case PuzzleType.FindBug: {
+                            const { bugLine, ...raw } = rawPuzzle;
+                            return raw;
+                        }
+                        case PuzzleType.WriteProgram:
+                            return rawPuzzle;
+                        case PuzzleType.FillGap:
+                            return rawPuzzle;
+                        case PuzzleType.WhatResult: {
+                            const { title, ...raw } = rawPuzzle;
+                            return raw;
+                        }
+                    }
+                }
             }
-            const { rating, ...rawPuzzle } = puzzle;
-            return rawPuzzle;
         }),
-        
     });
 
     const app = express();
