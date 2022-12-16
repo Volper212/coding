@@ -6,5 +6,5 @@
     export let unsetUser: () => void;
 </script>
 
-<Header {user} {unsetUser} />
+<Header {unsetUser} />
 <Navigation />

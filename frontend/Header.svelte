@@ -2,7 +2,6 @@
     import { link } from "svelte-routing";
     import api from "./api";
 
-    export let user: string;
     export let unsetUser: () => void;
 
     async function logOut() {
