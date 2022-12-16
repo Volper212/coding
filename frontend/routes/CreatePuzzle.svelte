@@ -7,7 +7,7 @@
         try {
             switch (type) {
                 case PuzzleType.FindBug:
-                    //api.createPuzzle.query({ title, type, description, code, bugLine: line });
+                    api.createPuzzle.query({ title, type, description, code, bugLine: line });
                     break;
                 case PuzzleType.WriteProgram:
                     //api.createPuzzle.query({ title, type, description, code, bugLine });
