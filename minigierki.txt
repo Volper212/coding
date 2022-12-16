@@ -1,0 +1,14 @@
+1.Znajdź błąd
+    - opis, output
+    - string kod bledny
+    - user zaznacza bledna linie
+2.Napisz program
+    - dany input
+3.Uzupełnij lukę
+    - porownuje string
+4.Co się wyświetli
+    - porownuje string
+
+
+
+

@@ -13,10 +13,12 @@ async function main() {
     const getLoggedIn = makeGetLoggedIn(database);
     const userProcedure = makeUserProcedure(getLoggedIn);
     const dependencies = { database, userProcedure };
-
     const router = makeRouter({
         authentication: makeAuthenticationRouter(database, getLoggedIn),
         example: makeExampleRouter(dependencies),
+        //startPuzzle: userProcedure.mutation(() => {
+        //    database.puzzles.find();
+        //}),
     });
 
     const app = express();

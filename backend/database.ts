@@ -9,6 +9,7 @@ export default async function getDatabase() {
     return {
         users: database.collection<User>("users"),
         sessions: database.collection<Session>("sessions"),
+        puzzles: database.collection<Puzzle>("puzzles"),
     };
 }
 
@@ -17,9 +18,37 @@ export type Database = AwaitableReturnType<typeof getDatabase>;
 type User = {
     username: string;
     passwordHash: string;
+    rating: number;
 };
 
 type Session = {
     username: string;
     token: string;
 };
+
+enum PuzzleType {
+    FindBug,
+    WriteProgram,
+    FillGap,
+    WhatResult,
+}
+
+type Puzzle = {
+    rating: number;
+} & (
+    | {
+          type: PuzzleType.FindBug;
+          description: string;
+          code: string;
+          bugLine: number;
+      }
+    | {
+          type: PuzzleType.WriteProgram;
+      }
+    | {
+          type: PuzzleType.FillGap;
+      }
+    | {
+          type: PuzzleType.WhatResult;
+      }
+);
