@@ -9,3 +9,7 @@
         <App {user} />
     {/await}
 </Router>
+
+<style lang="scss">
+    @use "global";
+</style>
