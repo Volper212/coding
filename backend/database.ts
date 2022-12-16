@@ -21,6 +21,9 @@ type User = {
     email: string;
     passwordHash: string;
     rating: number;
+    syntaxRating: number;
+    algorithmRating: number;
+    analiseRating: number;
     done: Set<string>;
 };
 
