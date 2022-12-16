@@ -16,9 +16,12 @@ async function main() {
     const router = makeRouter({
         authentication: makeAuthenticationRouter(database, getLoggedIn),
         example: makeExampleRouter(dependencies),
-        //startPuzzle: userProcedure.mutation(() => {
-        //    database.puzzles.find();
-        //}),
+        startPuzzle: userProcedure.query(async () => {
+            const puzzle = await database.puzzles.findOne({ $sample: { size: 1 } });
+            if (puzzle == null) return;
+            const { rating, ...rawPuzzle } = puzzle;
+            return rawPuzzle;
+        }),
     });
 
     const app = express();
