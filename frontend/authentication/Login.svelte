@@ -1,6 +1,5 @@
 <script lang="ts">
     import api from "frontend/api";
-    import { link } from "svelte-routing";
 
     export let setUser: (newUser: string) => void;
 
@@ -22,4 +21,3 @@
     <input type="password" bind:value={password} autocomplete="current-password" />
     <button type="submit">Zaloguj</button>
 </form>
-<a href="/register" use:link>Utwórz konto</a>

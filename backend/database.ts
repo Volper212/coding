@@ -17,6 +17,7 @@ export type Database = AwaitableReturnType<typeof getDatabase>;
 
 type User = {
     username: string;
+    email: string;
     passwordHash: string;
     rating: number;
 };
