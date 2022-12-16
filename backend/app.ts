@@ -23,18 +23,22 @@ export const rawPuzzle = z
     .or(
         z.object({
             type: z.literal(PuzzleType.WriteProgram),
+            description: z.string(),
+            //inputs & outputs
         })
     )
     .or(
         z.object({
             type: z.literal(PuzzleType.FillGap),
+            description: z.string(),
             code: z.string(),
             line: z.number(),
             start: z.number(),
             end: z.number(),
+            word: z.string(),
         })
     )
-    .or(z.object({ type: z.literal(PuzzleType.WhatResult) }));
+    .or(z.object({ type: z.literal(PuzzleType.WhatResult), code: z.string(), result: z.string() }));
 async function main() {
     const database = await getDatabase();
     const getLoggedIn = makeGetLoggedIn(database);
@@ -44,8 +48,19 @@ async function main() {
         authentication: makeAuthenticationRouter(database, getLoggedIn),
         example: makeExampleRouter(dependencies),
         createPuzzle: userProcedure
-            .input(z.object({ title: z.string().min(1).max(20) }).and(rawPuzzle))
+            .input(
+                z
+                    .object({
+                        title: z.string().min(1).max(20),
+                        syntaxRating: z.boolean(),
+                        algorithmRating: z.boolean(),
+                        analiseRating: z.boolean(),
+                    })
+                    .and(rawPuzzle)
+            )
             .query(async ({ ctx: { username }, input }) => {
+                if (!input.syntaxRating && !input.algorithmRating && !input.analiseRating)
+                    throw "Check at least one category";
                 await database.puzzles.insertOne({
                     author: username,
                     ...input,
