@@ -22,6 +22,7 @@ export default function makeAuthenticationRouter(database: Database, getLoggedIn
                     database.users.insertOne({
                         username,
                         passwordHash: await bcrypt.hash(password, 10),
+                        rating: 1500,
                     }),
                     logIn(res, username),
                 ]);

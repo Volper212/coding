@@ -18,7 +18,7 @@ const makeGetLoggedIn =
                 if (session == null) return;
                 return {
                     username: session.username,
-                    token,
+                    token
                 };
             }
         }
