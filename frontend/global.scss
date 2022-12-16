@@ -31,3 +31,7 @@
     background-color: rgba(black, 0.15);
     border: 1px solid $secondary-color;
 }
+
+:global(a) {
+    color: #04C3FF;
+}

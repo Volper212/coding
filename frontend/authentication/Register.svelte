@@ -1,10 +1,10 @@
 <script lang="ts">
     import api from "frontend/api";
-    import { link } from "svelte-routing";
 
     export let setUser: (newUser: string) => void;
 
     let username = "";
+    let email = "";
     let password = "";
     let repeatedPassword = "";
 
@@ -13,7 +13,7 @@
             alert("Hasła nie są takie same");
             return;
         }
-        const message = await api.authentication.register.mutate({ username, password });
+        const message = await api.authentication.register.mutate({ username, email, password });
         if (message) {
             alert(message);
             return;
@@ -24,8 +24,8 @@
 
 <form on:submit|preventDefault={register}>
     <input type="text" bind:value={username} required autocomplete="username" />
+    <input type="email" bind:value={email} required />
     <input type="password" bind:value={password} autocomplete="new-password" />
     <input type="password" bind:value={repeatedPassword} autocomplete="new-password" />
     <button type="submit">Zarejestruj</button>
 </form>
-<a href="/" use:link>Zaloguj się</a>

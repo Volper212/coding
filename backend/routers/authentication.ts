@@ -12,15 +12,17 @@ export default function makeAuthenticationRouter(database: Database, getLoggedIn
             .input(
                 z.object({
                     username: z.string().min(1),
+                    email: z.string().email(),
                     password: z.string(),
                 })
             )
-            .mutation(async ({ input: { username, password }, ctx: { res } }) => {
+            .mutation(async ({ input: { username, email, password }, ctx: { res } }) => {
                 if (await database.users.findOne({ username }))
                     return "Nazwa użytkownika jest zajęta";
                 await Promise.all([
                     database.users.insertOne({
                         username,
+                        email,
                         passwordHash: await bcrypt.hash(password, 10),
                         rating: 1500,
                     }),
