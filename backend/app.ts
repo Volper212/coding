@@ -11,6 +11,29 @@ import { PuzzleType } from "../shared/types";
 import { z } from "zod";
 import { Db } from "mongodb";
 
+export const rawPuzzle = z
+    .object({
+        type: z.literal(PuzzleType.FindBug),
+        description: z.string(),
+        code: z.string(),
+        bugLine: z.number(),
+    })
+    .or(
+        z.object({
+            type: z.literal(PuzzleType.WriteProgram),
+            
+        })
+    )
+    .or(
+        z.object({
+            type: z.literal(PuzzleType.FillGap),
+            code: z.string(),
+            line: z.number(),
+            start: z.number(),
+            end: z.number(),
+        })
+    )
+    .or(z.object({ type: z.literal(PuzzleType.WhatResult) }));
 async function main() {
     const database = await getDatabase();
     const getLoggedIn = makeGetLoggedIn(database);
@@ -21,16 +44,9 @@ async function main() {
         example: makeExampleRouter(dependencies),
         createPuzzle: userProcedure
             .input(
-                z
-                    .object({
-                        type: z.literal(PuzzleType.FindBug),
-                        description: z.string(),
-                        code: z.string(),
-                        bugLine: z.number(),
-                    })
-                    .or(z.object({ type: z.literal(PuzzleType.WriteProgram) }))
-                    .or(z.object({ type: z.literal(PuzzleType.FillGap) }))
-                    .or(z.object({ type: z.literal(PuzzleType.WhatResult) }))
+                z.object({ title: z.string().min(1).max(20) }).and(
+                    rawPuzzle
+                )
             )
             .query(async ({ ctx: { username }, input }) => {
                 await database.puzzles.insertOne({
@@ -45,6 +61,7 @@ async function main() {
             const { rating, ...rawPuzzle } = puzzle;
             return rawPuzzle;
         }),
+        
     });
 
     const app = express();

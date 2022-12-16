@@ -29,6 +29,7 @@ type Session = {
 };
 
 export type Puzzle = {
+    title: string;
     rating: number;
     author: string;
 } & RawPuzzle;

@@ -3,18 +3,36 @@
     import { PuzzleType } from "../../shared/types";
     async function create() {
         //add puzzle to database
+
         try {
-            api.createPuzzle.query({ type, description, code, bugLine });
+            switch (type) {
+                case PuzzleType.FindBug:
+                    //api.createPuzzle.query({ title, type, description, code, bugLine: line });
+                    break;
+                case PuzzleType.WriteProgram:
+                    //api.createPuzzle.query({ title, type, description, code, bugLine });
+                    break;
+                case PuzzleType.FillGap:
+                    //api.createPuzzle.query({ title, type, code, line, start, end });
+                    break;
+                case PuzzleType.WhatResult:
+                    break;
+            }
         } catch (e) {
             console.log(e);
         }
         location.reload();
+
         //guessedCorrectly = await api.example.isMyUsername.query(username);
     }
     let type: PuzzleType;
     let description = "";
     let code = "";
-    let bugLine = 0;
+    let line = 0;
+    let start = 0;
+    let end = 0;
+
+    let title = "";
     function print() {
         console.log(type);
     }
@@ -22,7 +40,9 @@
 
 <p>Stwórz zadanie:</p>
 <form on:submit|preventDefault={create}>
-    <label>
+    <label>Nazwa zadania<input bind:value={title} /></label>
+    <label
+        >Typ zadania
         <select bind:value={type} on:change={print}>
             <option value={PuzzleType.FindBug}>Znajdź Błąd</option>
             <option value={PuzzleType.WriteProgram}>Napisz program</option>
@@ -30,11 +50,20 @@
             <option value={PuzzleType.WhatResult}>Co się wyświetli?</option>
         </select>
     </label>
-    <label>Opis<textarea bind:value={description} /></label>
-    <label>Kod<textarea bind:value={code} /></label>
-    <!-- <input type="text" required bind:value={username} /> -->
     {#if type == PuzzleType.FindBug}
-        <label>Numer błędnej linii<input type="number" bind:value={bugLine} /></label>
+        <label>Numer błędnej linii<input type="number" bind:value={line} /></label>
+        <label>Opis<textarea bind:value={description} /></label>
     {/if}
+    {#if type == PuzzleType.FindBug || type == PuzzleType.FillGap}
+        <label>Kod<textarea bind:value={code} /></label>
+    {/if}
+    {#if type == PuzzleType.FillGap}
+        <label>Numer linii<input type="number" bind:value={line} /></label>
+        <label>Od znaku<input type="number" bind:value={start} /></label>
+        <label>Do znaku<input type="number" bind:value={end} /></label>
+    {/if}
+
+    <!-- <input type="text" required bind:value={username} /> -->
+
     <button type="submit">Wyslij</button>
 </form>

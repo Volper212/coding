@@ -1,3 +1,6 @@
+import type { rawPuzzle } from "backend/app";
+import type { z } from "zod";
+
 export const enum PuzzleType {
     FindBug,
     WriteProgram,
@@ -5,19 +8,4 @@ export const enum PuzzleType {
     WhatResult,
 }
 
-export type RawPuzzle =
-    | {
-          type: PuzzleType.FindBug;
-          description: string;
-          code: string;
-          bugLine: number;
-      }
-    | {
-          type: PuzzleType.WriteProgram;
-      }
-    | {
-          type: PuzzleType.FillGap;
-      }
-    | {
-          type: PuzzleType.WhatResult;
-      };
+export type RawPuzzle = z.infer<typeof rawPuzzle>;
