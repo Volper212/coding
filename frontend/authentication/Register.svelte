@@ -23,9 +23,14 @@
 </script>
 
 <form on:submit|preventDefault={register}>
-    <input type="text" bind:value={username} required autocomplete="username" />
-    <input type="email" bind:value={email} required />
-    <input type="password" bind:value={password} autocomplete="new-password" />
-    <input type="password" bind:value={repeatedPassword} autocomplete="new-password" />
+    <h1>Rejestracja</h1>
+    <label>Login:<br><input type="text" bind:value={username} required autocomplete="username" /></label>
+    <label>Adres email:<br><input type="email" bind:value={email} required /></label>
+    <label>Hasło:<br><input type="password" bind:value={password} autocomplete="new-password" /></label>
+    <label>Powtórz hasło:<br><input type="password" bind:value={repeatedPassword} autocomplete="new-password" /></label>
     <button type="submit">Zarejestruj</button>
 </form>
+
+<style lang="scss">
+    @use "./forms.scss" as *;
+</style>
