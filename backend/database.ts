@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 import type { AwaitableReturnType } from "./util/AwaitableReturnType";
-import type { PuzzleType, RawPuzzle } from "../shared/types";
+import type { RawPuzzle } from "../shared/types";
 
 export default async function getDatabase() {
     const client = await new MongoClient(
