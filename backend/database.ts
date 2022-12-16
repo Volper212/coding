@@ -1,5 +1,6 @@
 import { MongoClient } from "mongodb";
 import type { AwaitableReturnType } from "./util/AwaitableReturnType";
+import type { PuzzleType } from "../shared/types";
 
 export default async function getDatabase() {
     const client = await new MongoClient(
@@ -25,13 +26,6 @@ type Session = {
     username: string;
     token: string;
 };
-
-enum PuzzleType {
-    FindBug,
-    WriteProgram,
-    FillGap,
-    WhatResult,
-}
 
 type Puzzle = {
     rating: number;
