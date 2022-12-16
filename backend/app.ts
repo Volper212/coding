@@ -9,7 +9,6 @@ import makeUserProcedure from "./util/userProdecure";
 import makeExampleRouter from "./routers/example";
 import { PuzzleType } from "../shared/types";
 import { z } from "zod";
-import { Db } from "mongodb";
 
 async function main() {
     const database = await getDatabase();

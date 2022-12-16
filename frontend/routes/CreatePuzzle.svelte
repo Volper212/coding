@@ -9,7 +9,6 @@
             console.log(e);
         }
         location.reload();
-        //guessedCorrectly = await api.example.isMyUsername.query(username);
     }
     let type: PuzzleType;
     let description = "";
@@ -32,7 +31,6 @@
     </label>
     <label>Opis<textarea bind:value={description} /></label>
     <label>Kod<textarea bind:value={code} /></label>
-    <!-- <input type="text" required bind:value={username} /> -->
     {#if type == PuzzleType.FindBug}
         <label>Numer błędnej linii<input type="number" bind:value={bugLine} /></label>
     {/if}
