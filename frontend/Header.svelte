@@ -11,6 +11,5 @@
     }
 </script>
 
-<h1>Witaj {user}!</h1>
 <a href="/" use:link>Strona główna</a>
 <a href="/" use:link on:click={logOut}>Wyloguj</a>
