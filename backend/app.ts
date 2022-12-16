@@ -3,12 +3,14 @@ import { makeRouter, makeTRPCExpressMiddleware } from "./trpc";
 import dotenv from "dotenv";
 import makeAuthenticationRouter from "./routers/authentication";
 import type { AwaitableReturnType } from "./util/AwaitableReturnType";
-import getDatabase from "./database";
+import getDatabase, { type Puzzle } from "./database";
 import makeGetLoggedIn from "./util/getLoggedIn";
 import makeUserProcedure from "./util/userProdecure";
 import makeExampleRouter from "./routers/example";
 import { PuzzleType } from "../shared/types";
 import { z } from "zod";
+
+const flatness = 10;
 
 async function main() {
     const database = await getDatabase();
@@ -38,9 +40,20 @@ async function main() {
                     rating: 1000,
                 });
             }),
-        startPuzzle: userProcedure.query(async () => {
-            const puzzle = await database.puzzles.findOne({ $sample: { size: 1 } });
-            if (puzzle == null) return;
+        startPuzzle: userProcedure.query(async ({ ctx: { username } }) => {
+            const user = await database.users.findOne({ username });
+            if (user == null) throw new Error("User not found");
+            let chance: number;
+            let puzzle: Puzzle;
+            while (true) {
+                const puzzleOption = await database.puzzles.findOne({ $sample: { size: 1 } });
+                if (puzzleOption == null) return;
+                puzzle = puzzleOption;
+                const ratingDifference = puzzle.rating - user.rating;
+                const probability = Math.exp(-0.5 * (ratingDifference / flatness) ** 2) / flatness; // Normal distribution
+                console.log(probability);
+                break;
+            }
             const { rating, ...rawPuzzle } = puzzle;
             return rawPuzzle;
         }),
