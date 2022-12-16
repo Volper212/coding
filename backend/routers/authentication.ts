@@ -25,6 +25,7 @@ export default function makeAuthenticationRouter(database: Database, getLoggedIn
                         email,
                         passwordHash: await bcrypt.hash(password, 10),
                         rating: 1000,
+                        done: new Set<string>(),
                     }),
                     logIn(res, username),
                 ]);
