@@ -22,7 +22,6 @@
             console.log(e);
         }
         location.reload();
-
     }
     let type: PuzzleType;
     let description = "";
@@ -49,8 +48,6 @@
             <option value={PuzzleType.WhatResult}>Co się wyświetli?</option>
         </select>
     </label>
-    <label>Opis<textarea bind:value={description} /></label>
-    <label>Kod<textarea bind:value={code} /></label>
     {#if type == PuzzleType.FindBug}
         <label>Numer błędnej linii<input type="number" bind:value={line} /></label>
         <label>Opis<textarea bind:value={description} /></label>
