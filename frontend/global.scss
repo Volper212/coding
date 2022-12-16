@@ -1,6 +1,33 @@
+@use "variables" as *;
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Roboto&display=swap');
 
 :global(body) {
-     background-color: #20262F;
+    color: white;
+    font-family: $code-font;
+    background-color: #20262F;
+}
+
+:global(button) {
+    font-family: $code-font;
+    padding: 0.8vw 1.5vw;
+    color: white;
+    font-size: 1vw;
+    background-color: rgba(black, 0.15);
+    border-radius: 50px;
+    border-color: white;
+}
+
+:global(form) {
+    border: 1px solid $secondary-color;
+    border-radius: 15px;
+}
+
+:global(input) {
+    padding: 0.8vw 1.5vw;
+    color: white;
+    font-size: 1vw;
+    background-color: rgba(black, 0.15);
+    border: 1px solid $secondary-color;
 }
