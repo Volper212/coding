@@ -16,8 +16,13 @@
     }
 </script>
 
-<form on:submit|preventDefault={logIn}>
-    <input type="text" bind:value={username} required autocomplete="username" />
-    <input type="password" bind:value={password} autocomplete="current-password" />
+<form on:submit|preventDefault={logIn} style="height: 25vw;">
+    <h1>Logowanie</h1>
+    <label>Login:<br><input type="text" bind:value={username} required autocomplete="username" /></label>
+    <label>Hasło:<br><input type="password" bind:value={password} autocomplete="current-password" /></label>
     <button type="submit">Zaloguj</button>
 </form>
+
+<style lang="scss">
+    @use "./forms.scss";
+</style>
