@@ -33,7 +33,7 @@
             "",
             0,
             0,
-            []
+            tests
         )}
 >
     <PuzzleName bind:title />

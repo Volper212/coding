@@ -11,6 +11,7 @@ import { PuzzleType } from "../shared/types";
 import { z } from "zod";
 import { ObjectId, type WithId } from "mongodb";
 import { calculateRatingChanges } from "./elo";
+import _ from "lodash";
 
 const flatness = 100;
 
@@ -25,12 +26,12 @@ export const rawPuzzle = z
         z.object({
             type: z.literal(PuzzleType.WriteProgram),
             description: z.string(),
-            tests: z.array(
-                z.object({
+            tests: z
+                .object({
                     input: z.string(),
                     output: z.string(),
                 })
-            ),
+                .array(),
         })
     )
     .or(
@@ -132,6 +133,34 @@ async function main() {
                 const success = guess === puzzle.result;
 
                 return results(puzzle, success, username, _id);
+            }),
+
+        getInputs: userProcedure
+            .input(z.string())
+            .query(async ({ ctx: { username }, input: _id }) => {
+                await database.users.updateOne(
+                    { username },
+                    { $set: { lastPuzzleRecieval: { _id, time: Date.now() } } }
+                );
+                const puzzle = await getPuzzle(_id);
+                if (puzzle.type !== PuzzleType.WriteProgram) throw "Wrong type";
+                return puzzle.tests.map(({ input }) => input);
+            }),
+
+        checkProgram: userProcedure
+            .input(z.string().array())
+            .query(async ({ ctx: { username }, input: outputs }) => {
+                const user = await database.users.findOne({ username });
+                if (user == null) throw new Error("User not found");
+                if (user.lastPuzzleRecieval == null) throw new Error("No puzzle");
+                if (Date.now() - 5000 > user.lastPuzzleRecieval.time) throw new Error("Too slow");
+                const puzzle = await getPuzzle(user.lastPuzzleRecieval._id);
+                if (puzzle.type !== PuzzleType.WriteProgram) throw "Wrong type";
+                const success = _.isEqual(
+                    puzzle.tests.map(({ output }) => output),
+                    outputs
+                );
+                return results(puzzle, success, username, user.lastPuzzleRecieval._id);
             }),
     });
     const app = express();

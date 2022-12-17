@@ -3,6 +3,7 @@
     import api from "frontend/api";
     import FindBug from "frontend/puzzles/FindBug.svelte";
     import WhatResult from "frontend/puzzles/WhatResult.svelte";
+    import WriteProgram from "frontend/puzzles/WriteProgram.svelte";
     import { PuzzleType } from "shared/types";
 
     let puzzle: AwaitableReturnType<typeof getNextPuzzle>;
@@ -27,6 +28,8 @@
         />
     {:else if puzzle.type === PuzzleType.WhatResult}
         <WhatResult _id={puzzle._id} code={puzzle.code} />
+    {:else if puzzle.type === PuzzleType.WriteProgram}
+        <WriteProgram _id={puzzle._id} title={puzzle.title} description={puzzle.description} />
     {/if}
 {:else}
     <p>Brak zadań</p>

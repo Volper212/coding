@@ -25,6 +25,10 @@ export type User = {
     algorithmRating: number;
     analyseRating: number;
     done: string[];
+    lastPuzzleRecieval?: {
+        _id: string;
+        time: number;
+    };
 };
 
 type Session = {
