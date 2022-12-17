@@ -9,7 +9,8 @@ import makeUserProcedure from "./util/userProdecure";
 import makeExampleRouter from "./routers/example";
 import { PuzzleType } from "../shared/types";
 import { z } from "zod";
-import type { WithId } from "mongodb";
+import { ObjectId, type WithId } from "mongodb";
+import { calculateRatingChanges } from "./elo";
 
 const flatness = 100;
 
@@ -65,6 +66,7 @@ async function main() {
                     author: username,
                     ...input,
                     rating: 1000,
+                    views: 0,
                 });
             }),
         startPuzzle: userProcedure.query(async ({ ctx: { username } }) => {
@@ -72,12 +74,22 @@ async function main() {
             if (user == null) throw new Error("User not found");
             while (true) {
                 const puzzle = (await database.puzzles
-                    .aggregate([{ $sample: { size: 1 } }])
+                    .aggregate([
+                        {
+                            $match: {
+                                _id: {
+                                    $not: { $in: user.done.map((value) => new ObjectId(value)) },
+                                },
+                            },
+                        },
+                        { $sample: { size: 1 } },
+                    ])
                     .next()) as WithId<Puzzle> | null;
                 if (puzzle == null) return;
                 const ratingDifference = puzzle.rating - user.rating;
                 const probability = Math.exp(-0.5 * (ratingDifference / flatness) ** 2) / flatness; // Normal distribution
                 if (Math.random() < probability * 30) {
+                    await database.puzzles.updateOne({ _id: puzzle._id }, { $inc: { views: 1 } });
                     const { rating, author, ...rawPuzzle } = puzzle;
                     switch (rawPuzzle.type) {
                         case PuzzleType.FindBug: {
@@ -96,6 +108,51 @@ async function main() {
                 }
             }
         }),
+        findBugCheck: userProcedure
+            .input(z.object({ id: z.string(), line: z.number() }))
+            .query(async ({ ctx: { username }, input }) => {
+                const puzzle = await database.puzzles.findOne({ _id: new ObjectId(input.id) });
+                const user = await database.users.findOne({ username });
+                if (puzzle == null) throw "No puzzle found";
+                if (puzzle.type != PuzzleType.FindBug) throw "Wrong type";
+
+                if (user == null) throw "";
+
+                const oldPoints = { playerRating: user.rating, puzzleRating: puzzle.rating };
+                const newPoints = calculateRatingChanges(
+                    oldPoints.playerRating,
+                    oldPoints.puzzleRating,
+                    puzzle.bugLine != input.line
+                );
+                await database.users.updateOne(
+                    { username },
+                    { $inc: { rating: newPoints.player } }
+                );
+                await database.puzzles.updateOne(
+                    { _id: new ObjectId(input.id) },
+                    { $inc: { rating: newPoints.puzzle } }
+                );
+                return {
+                    ...oldPoints,
+                    ...newPoints,
+                    success: puzzle.bugLine != input.line,
+                };
+            }),
+
+        checkWhatResult: userProcedure
+            .input(z.object({ _id: z.string(), guess: z.string() }))
+            .query(async ({ ctx: { username }, input: { _id, guess } }) => {
+                const puzzle = await database.puzzles.findOne({ _id: new ObjectId(_id) });
+                if (puzzle == null) throw new Error("Puzzle not found");
+                if (puzzle.type !== PuzzleType.WhatResult)
+                    throw new Error("Puzzle is not WhatResult");
+                const { result } = puzzle;
+                await database.users.updateOne({ username }, { $push: { done: _id } });
+                if (guess === result) {
+                    return puzzle;
+                }
+                return false;
+            }),
     });
 
     const app = express();

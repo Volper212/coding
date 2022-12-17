@@ -28,7 +28,7 @@ export default function makeAuthenticationRouter(database: Database, getLoggedIn
                         syntaxRating: 1000,
                         algorithmRating: 1000,
                         analiseRating: 1000,
-                        done: new Set<string>(),
+                        done: [],
                     }),
                     logIn(res, username),
                 ]);

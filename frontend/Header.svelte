@@ -10,5 +10,64 @@
     }
 </script>
 
-<a href="/" use:link>Strona główna</a>
-<a href="/" use:link on:click={logOut}>Wyloguj</a>
+<main>
+    <div>
+        <a href="/" class="name" use:link><span>Script<span class="on">on</span></span></a>
+        <span class="code" style="font-size: 1.5vw;">console.log(<span class="color">“Profil”</span>);</span>
+    </div>
+
+    <div>
+        <div class="data">
+            <span class="code">let <span class="color">twoj_login</span> = <span class="color">"Czaros"</span>;</span><br>
+            <span class="code">let <span class="color">twoj_email</span> = <span class="color">"cezario@gmail.com"</span>;</span><br>
+        </div>
+        <a href="/" use:link on:click={logOut}><button class="logout">Wyloguj się</button></a>
+    </div>
+</main>
+
+<style lang="scss">
+    @use "./variables.scss" as *;
+
+    main {
+        height: 20vh;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 2vw;
+    }
+
+    main > div {
+        width: 35%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+}
+
+    .name {
+        color: white;
+        text-decoration: none;
+        font-size: 3vw;
+        .on {
+            color: $red-color;
+        }
+    }
+
+    .code {
+        text-align: left;
+        font-size: 1.1vw;
+        color: $primary-color;
+        .color {
+            color: $secondary-color;
+        }
+    }
+
+    .data .code {
+        font-size: 0.9vw;
+    }
+
+    .logout {
+        color: $red-color;
+    }
+</style>
