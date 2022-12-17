@@ -136,7 +136,7 @@
             .title {
                 border-bottom: 0.1vw solid $primary-color;
                 width: 100%;
-                text-align: right;
+                text-align: center;
                 font-size: 1.5vw;
             }
 
