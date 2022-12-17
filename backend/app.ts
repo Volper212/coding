@@ -9,8 +9,9 @@ import makeUserProcedure from "./util/userProdecure";
 import makeExampleRouter from "./routers/example";
 import { PuzzleType } from "../shared/types";
 import { z } from "zod";
+import { ObjectId, type WithId } from "mongodb";
 
-const flatness = 10;
+const flatness = 100;
 
 export const rawPuzzle = z
     .object({
@@ -22,19 +23,22 @@ export const rawPuzzle = z
     .or(
         z.object({
             type: z.literal(PuzzleType.WriteProgram),
-            
+            description: z.string(),
+            //inputs & outputs
         })
     )
     .or(
         z.object({
             type: z.literal(PuzzleType.FillGap),
+            description: z.string(),
             code: z.string(),
             line: z.number(),
             start: z.number(),
             end: z.number(),
+            word: z.string(),
         })
     )
-    .or(z.object({ type: z.literal(PuzzleType.WhatResult) }));
+    .or(z.object({ type: z.literal(PuzzleType.WhatResult), code: z.string(), result: z.string() }));
 async function main() {
     const database = await getDatabase();
     const getLoggedIn = makeGetLoggedIn(database);
@@ -45,35 +49,91 @@ async function main() {
         example: makeExampleRouter(dependencies),
         createPuzzle: userProcedure
             .input(
-                z.object({ title: z.string().min(1).max(20) }).and(
-                    rawPuzzle
-                )
+                z
+                    .object({
+                        title: z.string().min(1).max(20),
+                        syntaxRating: z.boolean(),
+                        algorithmRating: z.boolean(),
+                        analiseRating: z.boolean(),
+                    })
+                    .and(rawPuzzle)
             )
             .query(async ({ ctx: { username }, input }) => {
+                if (!input.syntaxRating && !input.algorithmRating && !input.analiseRating)
+                    throw "Check at least one category";
                 await database.puzzles.insertOne({
                     author: username,
                     ...input,
                     rating: 1000,
+                    views: 0,
                 });
             }),
         startPuzzle: userProcedure.query(async ({ ctx: { username } }) => {
             const user = await database.users.findOne({ username });
             if (user == null) throw new Error("User not found");
-            let chance: number;
-            let puzzle: Puzzle;
             while (true) {
-                const puzzleOption = await database.puzzles.findOne({ $sample: { size: 1 } });
-                if (puzzleOption == null) return;
-                puzzle = puzzleOption;
+                const puzzle = (await database.puzzles
+                    .aggregate([
+                        {
+                            $match: {
+                                _id: {
+                                    $not: { $in: user.done.map((value) => new ObjectId(value)) },
+                                },
+                            },
+                        },
+                        { $sample: { size: 1 } },
+                    ])
+                    .next()) as WithId<Puzzle> | null;
+                if (puzzle == null) return;
                 const ratingDifference = puzzle.rating - user.rating;
                 const probability = Math.exp(-0.5 * (ratingDifference / flatness) ** 2) / flatness; // Normal distribution
-                console.log(probability);
-                break;
+                if (Math.random() < probability * 30) {
+                    await database.puzzles.updateOne({ _id: puzzle._id }, { $inc: { views: 1 } });
+                    const { rating, author, ...rawPuzzle } = puzzle;
+                    switch (rawPuzzle.type) {
+                        case PuzzleType.FindBug: {
+                            const { bugLine, ...raw } = rawPuzzle;
+                            return raw;
+                        }
+                        case PuzzleType.WriteProgram:
+                            return rawPuzzle;
+                        case PuzzleType.FillGap:
+                            return rawPuzzle;
+                        case PuzzleType.WhatResult: {
+                            const { title, ...raw } = rawPuzzle;
+                            return raw;
+                        }
+                    }
+                }
             }
-            const { rating, ...rawPuzzle } = puzzle;
-            return rawPuzzle;
         }),
-        
+        findBugCheck: userProcedure
+            .input(z.object({ id: z.string(), line: z.number() }))
+            .query(async ({ ctx: { username }, input }) => {
+                const puzzle = await database.puzzles.findOne({ _id: new ObjectId(input.id) });
+                const user = await database.users.findOne({ username });
+                if (puzzle == null) throw "No puzzle found";
+                if (puzzle.type != PuzzleType.FindBug) throw "Wrong type";
+                if (puzzle.bugLine != input.line)
+                    return { ...puzzle, userRating: user?.rating, success: true };
+
+                return { ...puzzle, userRating: user?.rating, success: false };
+            }),
+
+        checkWhatResult: userProcedure
+            .input(z.object({ _id: z.string(), guess: z.string() }))
+            .query(async ({ ctx: { username }, input: { _id, guess } }) => {
+                const puzzle = await database.puzzles.findOne({ _id: new ObjectId(_id) });
+                if (puzzle == null) throw new Error("Puzzle not found");
+                if (puzzle.type !== PuzzleType.WhatResult)
+                    throw new Error("Puzzle is not WhatResult");
+                const { result } = puzzle;
+                await database.users.updateOne({ username }, { $push: { done: _id } });
+                if (guess === result) {
+                    return puzzle;
+                }
+                return false;
+            }),
     });
 
     const app = express();

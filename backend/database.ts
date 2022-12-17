@@ -21,6 +21,10 @@ type User = {
     email: string;
     passwordHash: string;
     rating: number;
+    syntaxRating: number;
+    algorithmRating: number;
+    analiseRating: number;
+    done: string[];
 };
 
 type Session = {
@@ -30,6 +34,10 @@ type Session = {
 
 export type Puzzle = {
     title: string;
+    views: number;
     rating: number;
     author: string;
+    syntaxRating: boolean;
+    algorithmRating: boolean;
+    analiseRating: boolean;
 } & RawPuzzle;
