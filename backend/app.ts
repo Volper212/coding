@@ -60,8 +60,6 @@ async function main() {
                     .and(rawPuzzle)
             )
             .query(async ({ ctx: { username }, input }) => {
-                if (!input.syntaxRating && !input.algorithmRating && !input.analiseRating)
-                    throw "Check at least one category";
                 await database.puzzles.insertOne({
                     author: username,
                     ...input,
@@ -143,15 +141,33 @@ async function main() {
             .input(z.object({ _id: z.string(), guess: z.string() }))
             .query(async ({ ctx: { username }, input: { _id, guess } }) => {
                 const puzzle = await database.puzzles.findOne({ _id: new ObjectId(_id) });
-                if (puzzle == null) throw new Error("Puzzle not found");
-                if (puzzle.type !== PuzzleType.WhatResult)
-                    throw new Error("Puzzle is not WhatResult");
-                const { result } = puzzle;
-                await database.users.updateOne({ username }, { $push: { done: _id } });
-                if (guess === result) {
-                    return puzzle;
-                }
-                return false;
+                const user = await database.users.findOne({ username });
+                if (puzzle == null) throw "No puzzle found";
+                if (puzzle.type != PuzzleType.WhatResult) throw "Wrong type";
+
+                if (user == null) throw "";
+
+                const success = guess === puzzle.result;
+
+                const oldPoints = { playerRating: user.rating, puzzleRating: puzzle.rating };
+                const newPoints = calculateRatingChanges(
+                    oldPoints.playerRating,
+                    oldPoints.puzzleRating,
+                    success
+                );
+                await database.users.updateOne(
+                    { username },
+                    { $inc: { rating: newPoints.player } }
+                );
+                await database.puzzles.updateOne(
+                    { _id: new ObjectId(_id) },
+                    { $inc: { rating: newPoints.puzzle } }
+                );
+                return {
+                    ...oldPoints,
+                    ...newPoints,
+                    success,
+                };
             }),
     });
 
