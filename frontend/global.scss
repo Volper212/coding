@@ -18,6 +18,8 @@
     border-radius: 50px;
     border-color: $primary-color;
 
+    border: 0.1vw solid $primary-color;
+
     &:hover {
         cursor: pointer;
         background-color: rgba($button-color, 0.15);
@@ -25,18 +27,26 @@
 }
 
 :global(form) {
-    border: 1px solid $primary-color;
+    border: 0.1vw solid $primary-color;
     border-radius: 15px;
 }
 
-:global(input) {
+:global(input, textarea) {
     padding: 0.8vw 1.5vw;
     color: white;
     font-size: 1vw;
     background-color: rgba(black, 0.15);
-    border: 1px solid $primary-color;
+    border: 0.1vw solid $primary-color;
+}
+
+:global(textarea) {
+    resize: none;
 }
 
 :global(a) {
     color: $link-color;
+}
+
+:global(input[type=checkbox]) {
+    cursor: pointer;
 }

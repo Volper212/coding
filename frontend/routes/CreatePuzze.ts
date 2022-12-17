@@ -40,8 +40,16 @@ export default async function CreatePuzzle(
             });
             break;
         case PuzzleType.FillGap:
-            let word = code.split("\n")[line].slice(start, end);
+            console.log(code);
+            let word = code.split("\n")[line].substring(start, end + 1);
             console.log(word);
+            let codeArr = code.split("\n");
+            codeArr[line] =
+                codeArr[line].slice(0, start) +
+                " ".repeat(end - start + 1) +
+                codeArr[line].slice(end + 1);
+            code = codeArr.join("\n");
+            console.log(code);
             api.createPuzzle.query({
                 syntaxRating,
                 algorithmRating,
@@ -68,5 +76,5 @@ export default async function CreatePuzzle(
             });
             break;
     }
-    location.replace("/");
+    //location.replace("/");
 }

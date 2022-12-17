@@ -1,6 +1,7 @@
 <script lang="ts">
     import type { AwaitableReturnType } from "backend/util/AwaitableReturnType";
     import api from "frontend/api";
+    import FillGap from "frontend/puzzles/FillGap.svelte";
     import FindBug from "frontend/puzzles/FindBug.svelte";
     import WhatResult from "frontend/puzzles/WhatResult.svelte";
     import WriteProgram from "frontend/puzzles/WriteProgram.svelte";
@@ -30,6 +31,17 @@
         <WhatResult _id={puzzle._id} code={puzzle.code} />
     {:else if puzzle.type === PuzzleType.WriteProgram}
         <WriteProgram _id={puzzle._id} title={puzzle.title} description={puzzle.description} />
+    {:else if puzzle.type === PuzzleType.FillGap}
+        <FillGap
+            description={puzzle.description}
+            func={loadPuzzle}
+            title={puzzle.title}
+            _id={puzzle._id}
+            code={puzzle.code}
+            line={puzzle.line}
+            start={puzzle.start}
+            end={puzzle.end}
+        />
     {/if}
 {:else}
     <p>Brak zadań</p>

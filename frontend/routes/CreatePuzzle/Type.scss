@@ -1,0 +1,32 @@
+@use "frontend/variables.scss" as *;
+
+form {
+    border: none;
+    color: $primary-color;
+    font-size: 1vw;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    .code {
+        width: 100%;
+    }
+
+    main {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+
+        div {
+            margin-right: 3vw;
+        }
+
+        div:last-child {
+            display: flex;
+            margin-right: 0;
+            text-align: right;
+            align-items: flex-end;
+        }
+    }
+}

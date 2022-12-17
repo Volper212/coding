@@ -13,6 +13,8 @@ import { ObjectId, type WithId } from "mongodb";
 import { calculateRatingChanges } from "./elo";
 import _ from "lodash";
 
+import { getContext } from "svelte";
+
 const flatness = 100;
 
 export const rawPuzzle = z
@@ -161,6 +163,27 @@ async function main() {
                     outputs
                 );
                 return results(puzzle, success, username, user.lastPuzzleRecieval._id);
+            }),
+
+        getUsers: userProcedure.query(() => {
+            return database.users.find().toArray();
+        }),
+
+        getPuzzles: userProcedure
+            .input(z.object({ type: z.number(), author: z.string() }))
+            .query(({ input: { type, author } }) => {
+                return database.puzzles.find({ type, author }).toArray();
+            }),
+
+        checkFilledGap: userProcedure
+            .input(z.object({ _id: z.string(), gapInput: z.string() }))
+            .query(async ({ ctx: { username }, input: { _id, gapInput } }) => {
+                const puzzle = await getPuzzle(_id);
+                if (puzzle.type != PuzzleType.FillGap) throw "Wrong type";
+
+                const success = gapInput === puzzle.word;
+
+                return results(puzzle, success, username, _id);
             }),
     });
     const app = express();
