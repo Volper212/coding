@@ -6,6 +6,9 @@
     export let description: string;
     export let code: string;
     export let _id: string;
+    export let line: number;
+    export let start: number;
+    export let end: number;
     export let func: () => void;
     console.log(code);
     let finish = false;
@@ -38,8 +41,17 @@
 {:else}
     <h1>{title}</h1>
     <p>{description}</p>
-    {#each code.split("\n") as line, id}
+    {#each code.split("\n") as line1, id}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <p style="background-color: gray">{line}</p>
+        {#if id == line}
+            <p style="background-color: gray">
+                {line1.substring(0, start)}<input maxLength={end - start + 1} />{line1.substring(
+                    end
+                )}
+            </p>
+        {:else}
+            <p style="background-color: gray">{line1}</p>
+        {/if}
     {/each}
 {/if}
+<button type="submit">Wyslij</button>

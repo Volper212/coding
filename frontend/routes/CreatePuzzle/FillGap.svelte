@@ -33,12 +33,13 @@
             description,
             syntaxRating,
             algorithmRating,
-            analiseRating,
+            analyseRating,
             code,
             line,
             "",
             start,
-            end
+            end,
+            []
         )}
 >
     <PuzzleName bind:title />

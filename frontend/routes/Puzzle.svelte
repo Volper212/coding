@@ -35,6 +35,9 @@
             title={puzzle.title}
             _id={puzzle._id}
             code={puzzle.code}
+            line={puzzle.line}
+            start={puzzle.start}
+            end={puzzle.end}
         />
     {/if}
 {:else}
