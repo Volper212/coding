@@ -6,14 +6,18 @@
 
 <main>
     <span>Kategorie:</span>
-    <span><input type="checkbox" bind:checked={syntaxRating} />Składnia JS</span>
-    <span><input type="checkbox" bind:checked={algorithmRating} />Algorytmy</span>
-    <span><input type="checkbox" bind:checked={analyseRating} />Analiza kodu</span>
+    <label><input type="checkbox" bind:checked={syntaxRating} />Składnia JS</label>
+    <label><input type="checkbox" bind:checked={algorithmRating} />Algorytmy</label>
+    <label><input type="checkbox" bind:checked={analyseRating} />Analiza kodu</label>
 </main>
 
 <style lang="scss">
     main {
         display: flex;
         flex-direction: column;
+    }
+
+    label {
+        cursor: pointer;
     }
 </style>
