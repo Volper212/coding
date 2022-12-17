@@ -188,11 +188,11 @@ async function main() {
                 return results(puzzle, success, username, _id);
             }),
         getUserRatings: userProcedure
-        .input(z.object({user: z.string()}))
-        .query(async ({ ctx: { username } }) => {
-            const user = await database.users.findOne({ username });
-            return [user?.syntaxRating, user?.algorithmRating, user?.analyseRating];
-        }),
+            .input(z.object({ user: z.string() }))
+            .query(async ({ ctx: { username } }) => {
+                const user = await database.users.findOne({ username });
+                return [user?.syntaxRating, user?.algorithmRating, user?.analyseRating];
+            }),
     });
     const app = express();
     app.use(express.static("frontend/public"));
@@ -216,35 +216,39 @@ async function main() {
         if (user.done.includes(_id)) throw "";
         const oldPoints = { playerRating: user.rating, puzzleRating: puzzle.rating };
 
-        const syntaxPoints = calculateRatingChanges(
-            user.syntaxRating,
-            oldPoints.puzzleRating,
-            success
-        );
-        await database.users.updateOne(
-            { username },
-            { $inc: { syntaxRating: syntaxPoints.player }, $push: { done: _id } }
-        );
-
-        const algorithmRating = calculateRatingChanges(
-            user.algorithmRating,
-            oldPoints.puzzleRating,
-            success
-        );
-        await database.users.updateOne(
-            { username },
-            { $inc: { algorithmRating: algorithmRating.player }, $push: { done: _id } }
-        );
-
-        const analyseRating = calculateRatingChanges(
-            user.analyseRating,
-            oldPoints.puzzleRating,
-            success
-        );
-        await database.users.updateOne(
-            { username },
-            { $inc: { analyseRating: analyseRating.player }, $push: { done: _id } }
-        );
+        if (puzzle.syntaxRating) {
+            const syntaxPoints = calculateRatingChanges(
+                user.syntaxRating,
+                oldPoints.puzzleRating,
+                success
+            );
+            await database.users.updateOne(
+                { username },
+                { $inc: { syntaxRating: syntaxPoints.player }, $push: { done: _id } }
+            );
+        }
+        if (puzzle.algorithmRating) {
+            const algorithmRating = calculateRatingChanges(
+                user.algorithmRating,
+                oldPoints.puzzleRating,
+                success
+            );
+            await database.users.updateOne(
+                { username },
+                { $inc: { algorithmRating: algorithmRating.player }, $push: { done: _id } }
+            );
+        }
+        if (puzzle.analyseRating) {
+            const analyseRating = calculateRatingChanges(
+                user.analyseRating,
+                oldPoints.puzzleRating,
+                success
+            );
+            await database.users.updateOne(
+                { username },
+                { $inc: { analyseRating: analyseRating.player }, $push: { done: _id } }
+            );
+        }
 
         const newPoints = calculateRatingChanges(
             oldPoints.playerRating,
