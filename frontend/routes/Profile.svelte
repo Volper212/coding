@@ -2,12 +2,15 @@
     import { link } from "svelte-routing";
 
     import api from "frontend/api";
-    import { getContext } from "svelte";
 
+    import Chart from "./Profile/Chart.svelte";
+    
+    import { getContext } from "svelte";
     const loginUser = getContext<string>("user");
 
     let rank: any[] = [];
     let tasks: any[] = [[], [], [], []];
+    let userStats: any[] = [];
     (async () => {
         const users = await api.getUsers.query();
         users.forEach((user) => {
@@ -18,7 +21,6 @@
             return b[1] - a[1];
         });
 
-        console.log(rank);
         rank[0][2] = 1
         let postion = 2;
         for (let i = 1; i < rank.length; i++) {
@@ -29,7 +31,6 @@
             
             postion++;
         }
-        console.log(rank);
         rank = rank;
 
         for (let i = 0; i < 4; i++) {
@@ -40,8 +41,10 @@
                 tasks[i].push([puzzle.title, puzzle.rating, puzzle.views || 0]);
             });
         }
-
         tasks = tasks;
+        
+        userStats = await api.getUserRatings.query({user: loginUser});
+        userStats.forEach((stats, key) => userStats[key] = userStats[key] || 0)
     })();
 
     let titles = [
@@ -88,7 +91,11 @@
                     </span>
                 {/if}
             </div>
-            <div>Zdjęcie</div>
+            
+            <div id="chart">
+                {#if userStats.length}<Chart userData={userStats} />{/if}
+            </div>
+
             <div class="button">
                 <a href="/puzzle" use:link><button>Graj dalej</button></a>
             </div>
@@ -187,6 +194,11 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
+        #chart {
+            height: 32vw;
+            width: 32vw;
+        }
     }
 
     .tables {

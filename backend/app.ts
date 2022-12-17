@@ -13,8 +13,6 @@ import { ObjectId, type WithId } from "mongodb";
 import { calculateRatingChanges } from "./elo";
 import _ from "lodash";
 
-import { getContext } from "svelte";
-
 const flatness = 100;
 
 export const rawPuzzle = z
@@ -185,9 +183,11 @@ async function main() {
 
                 return results(puzzle, success, username, _id);
             }),
-        getUserRatings: userProcedure.query(async ({ ctx: { username } }) => {
+        getUserRatings: userProcedure
+        .input(z.object({user: z.string()}))
+        .query(async ({ ctx: { username } }) => {
             const user = await database.users.findOne({ username });
-            return [user?.rating, user?.syntaxRating, user?.algorithmRating, user?.analyseRating];
+            return [user?.syntaxRating, user?.algorithmRating, user?.analyseRating];
         }),
     });
     const app = express();

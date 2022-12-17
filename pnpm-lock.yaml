@@ -17,6 +17,7 @@ specifiers:
   '@types/rollup-plugin-css-only': ^3.1.0
   '@types/uuid': ^9.0.0
   bcrypt: ^5.1.0
+  chart.js: ^4.1.0
   dotenv: ^16.0.3
   express: ^4.18.2
   lodash: ^4.17.21
@@ -29,6 +30,7 @@ specifiers:
   rollup-plugin-svelte: ^7.1.0
   sass: ^1.56.2
   svelte: ^3.54.0
+  svelte-chartjs: ^3.1.0
   svelte-preprocess: ^4.10.7
   svelte-routing: ^1.6.0
   ts-node: ^10.9.1
@@ -54,6 +56,7 @@ dependencies:
   '@types/rollup-plugin-css-only': 3.1.0
   '@types/uuid': 9.0.0
   bcrypt: 5.1.0
+  chart.js: 4.1.0
   dotenv: 16.0.3
   express: 4.18.2
   lodash: 4.17.21
@@ -64,6 +67,7 @@ dependencies:
   rollup-plugin-svelte: 7.1.0_rollup@3.7.2+svelte@3.54.0
   sass: 1.56.2
   svelte: 3.54.0
+  svelte-chartjs: 3.1.0_c5ewxb3kcecza5z5xxfzwxl5a4
   svelte-preprocess: 4.10.7_qzsefpw3caktxn3x6hfckma6hy
   svelte-routing: 1.6.0_vjccw6zkwqrmxudvmy4reaayx4
   ts-node: 10.9.1_cdt7kd25fnza4agwhnm6aydboa
@@ -905,6 +909,10 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: false
 
+  /@kurkle/color/0.3.1:
+    resolution: {integrity: sha512-hW0GwZj06z/ZFUW2Espl7toVDjghJN+EKqyXzPSV8NV89d5BYp5rRMBJoc+aUN0x5OXDMeRQHazejr2Xmqj2tw==}
+    dev: false
+
   /@mapbox/node-pre-gyp/1.0.10:
     resolution: {integrity: sha512-4ySo4CjzStuprMwk35H5pPbkymjv1SF3jGLj6rAHp/xT/RF7TL7bd9CTm1xDY49K2qF7jmR/g7k+SkLETP6opA==}
     hasBin: true
@@ -1444,6 +1452,13 @@ packages:
       ansi-styles: 3.2.1
       escape-string-regexp: 1.0.5
       supports-color: 5.5.0
+    dev: false
+
+  /chart.js/4.1.0:
+    resolution: {integrity: sha512-Xta4vonV3e1pwFGLTyUMqXk2aH03D6253DSt52pdS7247u2SpIpQb6kCewxNgx1JfeLBUnjaxHYbHpOv6w78Og==}
+    engines: {pnpm: ^7.0.0}
+    dependencies:
+      '@kurkle/color': 0.3.1
     dev: false
 
   /chokidar/3.5.3:
@@ -2968,6 +2983,16 @@ packages:
   /supports-preserve-symlinks-flag/1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  /svelte-chartjs/3.1.0_c5ewxb3kcecza5z5xxfzwxl5a4:
+    resolution: {integrity: sha512-tQ+v9fJOXUd44lKYUP3zINyyK4kRAWn2HBs8c1aIkJsodNJyZ6DJZgPywvNv2bbGIVbWXZ8aTgvDawUkday+zw==}
+    peerDependencies:
+      chart.js: ^3.5.0 || ^4.0.0
+      svelte: ^3.45.0
+    dependencies:
+      chart.js: 4.1.0
+      svelte: 3.54.0
+    dev: false
 
   /svelte-preprocess/4.10.7_qzsefpw3caktxn3x6hfckma6hy:
     resolution: {integrity: sha512-sNPBnqYD6FnmdBrUmBCaqS00RyCsCpj2BG58A1JBswNF7b0OKviwxqVrOL/CKyJrLSClrSeqQv5BXNg2RUbPOw==}
