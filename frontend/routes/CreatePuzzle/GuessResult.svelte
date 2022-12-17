@@ -16,7 +16,7 @@
         algorithmRating = false,
         analyseRating = false,
         code = "",
-        line = 0;
+        result = "";
 </script>
 
 <h2>Guess</h2>
@@ -31,8 +31,8 @@
             algorithmRating,
             analyseRating,
             code,
-            line,
-            "",
+            0,
+            result,
             0,
             0,
             []
@@ -44,7 +44,7 @@
 
     <CodeEditor bind:code />
 
-    <Answer bind:line />
+    <label>Wynik<input bind:value={result} /></label>
     <button type="submit">Wyslij</button>
 </form>
 
