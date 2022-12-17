@@ -13,16 +13,16 @@
     let title = "",
         syntaxRating = false,
         algorithmRating = false,
-        analiseRating = false,
+        analyseRating = false,
         code = "",
         line = 0;
 </script>
 
-<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.WhatResult, title, "", syntaxRating, algorithmRating, analiseRating, code, line, "", 0, 0)}>
+<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.WhatResult, title, "", syntaxRating, algorithmRating, analyseRating, code, line, "", 0, 0, [])}>
     <main>
         <div><PuzzleName bind:title /></div>
         <div style="width: 30vw;" />
-        <div><Categories bind:syntaxRating bind:algorithmRating bind:analiseRating /></div>
+        <div><Categories bind:syntaxRating bind:algorithmRating bind:analyseRating /></div>
         <div><button type="submit">Wyślij</button></div>
     </main>
 

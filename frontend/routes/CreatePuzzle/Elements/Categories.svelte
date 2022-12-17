@@ -1,14 +1,14 @@
 <script type="ts">
     export let syntaxRating: boolean,
         algorithmRating: boolean,
-        analiseRating: boolean;
+        analyseRating: boolean;
 </script>
 
 <main>
     <span>Kategorie:</span>
     <span><input type="checkbox" bind:checked={syntaxRating} />Składnia JS</span>
     <span><input type="checkbox" bind:checked={algorithmRating} />Algorytmy</span>
-    <span><input type="checkbox" bind:checked={analiseRating} />Analiza kodu</span>
+    <span><input type="checkbox" bind:checked={analyseRating} />Analiza kodu</span>
 </main>
 
 <style lang="scss">
