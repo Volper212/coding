@@ -23,7 +23,7 @@ export type User = {
     rating: number;
     syntaxRating: number;
     algorithmRating: number;
-    analiseRating: number;
+    analyseRating: number;
     done: string[];
 };
 
@@ -39,5 +39,5 @@ export type Puzzle = {
     author: string;
     syntaxRating: boolean;
     algorithmRating: boolean;
-    analiseRating: boolean;
+    analyseRating: boolean;
 } & RawPuzzle;

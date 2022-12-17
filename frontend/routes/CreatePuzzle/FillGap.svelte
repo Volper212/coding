@@ -16,7 +16,7 @@
         description = "",
         syntaxRating = false,
         algorithmRating = false,
-        analiseRating = false,
+        analyseRating = false,
         code = "",
         line = 0;
 </script>
@@ -31,7 +31,7 @@
             description,
             syntaxRating,
             algorithmRating,
-            analiseRating,
+            analyseRating,
             code,
             line,
             "",
@@ -42,7 +42,7 @@
 >
     <PuzzleName bind:title />
     <Description bind:description />
-    <Categories bind:syntaxRating bind:algorithmRating bind:analiseRating />
+    <Categories bind:syntaxRating bind:algorithmRating bind:analyseRating />
     <SendButton />
 
     <CodeEditor bind:code />

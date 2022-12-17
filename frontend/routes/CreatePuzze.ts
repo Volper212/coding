@@ -7,7 +7,7 @@ export default async function CreatePuzzle(
     description: string,
     syntaxRating: boolean,
     algorithmRating: boolean,
-    analiseRating: boolean,
+    analyseRating: boolean,
     code: string,
     line: number,
     result: string,
@@ -20,7 +20,7 @@ export default async function CreatePuzzle(
             api.createPuzzle.query({
                 syntaxRating,
                 algorithmRating,
-                analiseRating,
+                analyseRating,
                 title,
                 type,
                 description,
@@ -32,7 +32,7 @@ export default async function CreatePuzzle(
             api.createPuzzle.query({
                 syntaxRating,
                 algorithmRating,
-                analiseRating,
+                analyseRating,
                 title,
                 type,
                 description,
@@ -45,7 +45,7 @@ export default async function CreatePuzzle(
             api.createPuzzle.query({
                 syntaxRating,
                 algorithmRating,
-                analiseRating,
+                analyseRating,
                 description,
                 title,
                 type,
@@ -60,7 +60,7 @@ export default async function CreatePuzzle(
             api.createPuzzle.query({
                 syntaxRating,
                 algorithmRating,
-                analiseRating,
+                analyseRating,
                 title,
                 type,
                 code,

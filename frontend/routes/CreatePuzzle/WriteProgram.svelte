@@ -12,7 +12,7 @@
         description = "",
         syntaxRating = false,
         algorithmRating = false,
-        analiseRating = false;
+        analyseRating = false;
 
     let tests: { input: string; output: string }[] = [];
 </script>
@@ -27,7 +27,7 @@
             description,
             syntaxRating,
             algorithmRating,
-            analiseRating,
+            analyseRating,
             "",
             0,
             "",
@@ -54,7 +54,7 @@
             tests = [...tests, { input: "", output: "" }];
         }}>+</button
     >
-    <Categories bind:syntaxRating bind:algorithmRating bind:analiseRating />
+    <Categories bind:syntaxRating bind:algorithmRating bind:analyseRating />
     <SendButton />
     <button type="submit">Wyslij</button>
 </form>

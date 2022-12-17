@@ -14,7 +14,7 @@
     let title = "",
         syntaxRating = false,
         algorithmRating = false,
-        analiseRating = false,
+        analyseRating = false,
         code = "",
         line = 0;
 </script>
@@ -29,7 +29,7 @@
             "",
             syntaxRating,
             algorithmRating,
-            analiseRating,
+            analyseRating,
             code,
             line,
             "",
@@ -39,7 +39,7 @@
         )}
 >
     <PuzzleName bind:title />
-    <Categories bind:syntaxRating bind:algorithmRating bind:analiseRating />
+    <Categories bind:syntaxRating bind:algorithmRating bind:analyseRating />
     <SendButton />
 
     <CodeEditor bind:code />

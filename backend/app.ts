@@ -60,7 +60,7 @@ async function main() {
                         title: z.string().min(1).max(20),
                         syntaxRating: z.boolean(),
                         algorithmRating: z.boolean(),
-                        analiseRating: z.boolean(),
+                        analyseRating: z.boolean(),
                     })
                     .and(rawPuzzle)
             )
