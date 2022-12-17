@@ -8,18 +8,33 @@
         await api.authentication.logOut.mutate();
         unsetUser();
     }
+
+    let username = "";
+    let email = "";
+    async function getEmailAndUsername() {
+        [username, email] = await api.getLoginEmail.query();
+    }
+    getEmailAndUsername();
 </script>
 
 <main>
     <div>
         <a href="/" class="name" use:link><span>Script<span class="on">on</span></span></a>
-        <span class="code" style="font-size: 1.5vw;">console.log(<span class="color">“Profil”</span>);</span>
+        <span class="code" style="font-size: 1.5vw;"
+            >console.log(<span class="color">“Profil”</span>);</span
+        >
     </div>
 
     <div>
         <div class="data">
-            <span class="code">let <span class="color">twoj_login</span> = <span class="color">"Czaros"</span>;</span><br>
-            <span class="code">let <span class="color">twoj_email</span> = <span class="color">"cezario@gmail.com"</span>;</span>
+            <span class="code"
+                >let <span class="color">twoj_login</span> =
+                <span class="color">{username}</span>;</span
+            ><br>
+            <span class="code"
+                >let <span class="color">twoj_email</span> =
+                <span class="color">{email}</span>;</span
+            ><br>
         </div>
         <a href="/" use:link on:click={logOut}><button class="logout">Wyloguj się</button></a>
     </div>
