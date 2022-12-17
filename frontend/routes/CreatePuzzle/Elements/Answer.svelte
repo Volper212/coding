@@ -1,6 +1,6 @@
 <script type="ts">
-    export let line: number;
-    export let label: string;
+    export let line: number
+    export let label : string
 </script>
 
 {label}<input type="number" bind:value={line} />

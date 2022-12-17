@@ -185,6 +185,10 @@ async function main() {
 
                 return results(puzzle, success, username, _id);
             }),
+        getUserRatings: userProcedure.query(async ({ ctx: { username } }) => {
+            const user = await database.users.findOne({ username });
+            return [user?.rating, user?.syntaxRating, user?.algorithmRating, user?.analyseRating];
+        }),
     });
     const app = express();
     app.use(express.static("frontend/public"));
