@@ -1,6 +1,6 @@
 <script type="ts">
     import { PuzzleType } from "../../../shared/types";
-    
+
     import CreatePuzzle from "../CreatePuzze";
 
     import PuzzleName from "./Elements/PuzzleName.svelte";
@@ -23,7 +23,23 @@
 
 <h2>Gap</h2>
 
-<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.FillGap, title, description, syntaxRating, algorithmRating, analiseRating, code, line, "", 0, 0)}>
+<form
+    on:submit|preventDefault={() =>
+        CreatePuzzle(
+            PuzzleType.FillGap,
+            title,
+            description,
+            syntaxRating,
+            algorithmRating,
+            analiseRating,
+            code,
+            line,
+            "",
+            0,
+            0,
+            []
+        )}
+>
     <PuzzleName bind:title />
     <Description bind:description />
     <Categories bind:syntaxRating bind:algorithmRating bind:analiseRating />

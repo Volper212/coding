@@ -1,7 +1,20 @@
 import api from "frontend/api";
 import { PuzzleType } from "../../shared/types";
 
-export default async function CreatePuzzle(type: number, title: string, description: string, syntaxRating: boolean, algorithmRating: boolean, analiseRating: boolean, code: string, line: number, result: string, start: number, end: number) {
+export default async function CreatePuzzle(
+    type: number,
+    title: string,
+    description: string,
+    syntaxRating: boolean,
+    algorithmRating: boolean,
+    analiseRating: boolean,
+    code: string,
+    line: number,
+    result: string,
+    start: number,
+    end: number,
+    tests: { input: string; output: string }[]
+) {
     switch (type) {
         case PuzzleType.FindBug:
             api.createPuzzle.query({
@@ -22,7 +35,8 @@ export default async function CreatePuzzle(type: number, title: string, descript
                 analiseRating,
                 title,
                 type,
-                description /*inputs outputs*/,
+                description,
+                tests,
             });
             break;
         case PuzzleType.FillGap:

@@ -1,8 +1,8 @@
 <script type="ts">
     import { PuzzleType } from "../../../shared/types";
-    
+
     import CreatePuzzle from "../CreatePuzze";
-    
+
     import PuzzleName from "./Elements/PuzzleName.svelte";
     import Description from "./Elements/Description.svelte";
     import Categories from "./Elements/Categories.svelte";
@@ -23,7 +23,23 @@
 
 <h2>Mistake</h2>
 
-<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.FindBug, title, description, syntaxRating, algorithmRating, analiseRating, code, line, "", 0, 0)}>
+<form
+    on:submit|preventDefault={() =>
+        CreatePuzzle(
+            PuzzleType.FindBug,
+            title,
+            description,
+            syntaxRating,
+            algorithmRating,
+            analiseRating,
+            code,
+            line,
+            "",
+            0,
+            0,
+            []
+        )}
+>
     <PuzzleName bind:title />
     <Description bind:description />
     <Categories bind:syntaxRating bind:algorithmRating bind:analiseRating />

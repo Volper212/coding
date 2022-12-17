@@ -21,7 +21,23 @@
 
 <h2>Guess</h2>
 
-<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.WhatResult, title, "", syntaxRating, algorithmRating, analiseRating, code, line, "", 0, 0)}>
+<form
+    on:submit|preventDefault={() =>
+        CreatePuzzle(
+            PuzzleType.WhatResult,
+            title,
+            "",
+            syntaxRating,
+            algorithmRating,
+            analiseRating,
+            code,
+            line,
+            "",
+            0,
+            0,
+            []
+        )}
+>
     <PuzzleName bind:title />
     <Categories bind:syntaxRating bind:algorithmRating bind:analiseRating />
     <SendButton />

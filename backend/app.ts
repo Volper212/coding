@@ -25,7 +25,12 @@ export const rawPuzzle = z
         z.object({
             type: z.literal(PuzzleType.WriteProgram),
             description: z.string(),
-            //inputs & outputs
+            tests: z.array(
+                z.object({
+                    input: z.string(),
+                    output: z.string(),
+                })
+            ),
         })
     )
     .or(
@@ -95,7 +100,8 @@ async function main() {
                             return raw;
                         }
                         case PuzzleType.WriteProgram:
-                            return rawPuzzle;
+                            const { tests, ...raw } = rawPuzzle;
+                            return raw;
                         case PuzzleType.FillGap:
                             return rawPuzzle;
                         case PuzzleType.WhatResult: {
