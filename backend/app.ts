@@ -133,6 +133,16 @@ async function main() {
 
                 return results(puzzle, success, username, _id);
             }),
+        checkFilledGap: userProcedure
+            .input(z.object({ _id: z.string(), gapInput: z.string() }))
+            .query(async ({ ctx: { username }, input: { _id, gapInput } }) => {
+                const puzzle = await getPuzzle(_id);
+                if (puzzle.type != PuzzleType.FillGap) throw "Wrong type";
+
+                const success = gapInput === puzzle.word;
+
+                return results(puzzle, success, username, _id);
+            }),
     });
     const app = express();
     app.use(express.static("frontend/public"));

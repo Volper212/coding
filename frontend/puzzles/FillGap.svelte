@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { AwaitableReturnType } from "backend/util/AwaitableReturnType";
-    //import api from "frontend/api";
+    import api from "frontend/api";
     import Ratings from "./Ratings.svelte";
     export let title: string;
     export let description: string;
@@ -10,17 +10,18 @@
     export let start: number;
     export let end: number;
     export let func: () => void;
+    let value = "";
     console.log(code);
     let finish = false;
-    //let res: AwaitableReturnType<typeof api.findBugCheck.query>;
-    async function check(id: number) {
-        //res = await api.findBugCheck.query({ id: _id, line: id });
-        //resfinish = true;
+    let res: AwaitableReturnType<typeof api.checkFilledGap.query>;
+    async function check() {
+        res = await api.checkFilledGap.query({ _id, gapInput: value });
+        finish = true;
     }
 </script>
 
 {#if finish}
-    <!-- {#if res.success}
+    {#if res.success}
         Sukces
         <Ratings
             points={res.playerRating}
@@ -36,7 +37,7 @@
             change={res.player}
             puzzleChange={res.puzzle}
         />
-    {/if} -->
+    {/if}
     <button on:click={func} style="color:white">Graj dalej</button>
 {:else}
     <h1>{title}</h1>
@@ -45,13 +46,14 @@
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         {#if id == line}
             <p style="background-color: gray">
-                {line1.substring(0, start)}<input maxLength={end - start + 1} />{line1.substring(
-                    end
-                )}
+                {line1.substring(0, start)}<input
+                    bind:value
+                    maxLength={end - start + 1}
+                />{line1.substring(end)}
             </p>
         {:else}
             <p style="background-color: gray">{line1}</p>
         {/if}
     {/each}
 {/if}
-<button type="submit">Wyslij</button>
+<button type="submit" on:click={check}>Wyslij</button>
