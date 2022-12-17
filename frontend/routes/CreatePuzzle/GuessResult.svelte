@@ -18,7 +18,23 @@
         result = "";
 </script>
 
-<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.WhatResult, title, "", syntaxRating, algorithmRating, analyseRating, code, line, "", 0, 0, [])}>
+<form
+    on:submit|preventDefault={() =>
+        CreatePuzzle(
+            PuzzleType.WhatResult,
+            title,
+            "",
+            syntaxRating,
+            algorithmRating,
+            analyseRating,
+            code,
+            0,
+            result,
+            0,
+            0,
+            []
+        )}
+>
     <main>
         <div><PuzzleName bind:title /></div>
         <div style="width: 30vw;" />
