@@ -10,11 +10,9 @@
     }
 </script>
 
-<!--<a href="/" use:link>Strona główna</a>-->
-
 <main>
     <div>
-        <span class="name">Script<span class="on">on</span></span>
+        <a href="/" class="name" use:link><span>Script<span class="on">on</span></span></a>
         <span class="code" style="font-size: 1.5vw;">console.log(<span class="color">“Profil”</span>);</span>
     </div>
 
@@ -48,6 +46,8 @@
 }
 
     .name {
+        color: white;
+        text-decoration: none;
         font-size: 3vw;
         .on {
             color: $red-color;
