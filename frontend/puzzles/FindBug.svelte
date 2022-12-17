@@ -6,6 +6,7 @@
     export let description: string;
     export let code: string;
     export let _id: string;
+    export let func: () => void;
     let finish = false;
     let res: AwaitableReturnType<typeof api.findBugCheck.query>;
     async function check(id: number) {
@@ -32,6 +33,7 @@
             puzzleChange={res.puzzle}
         />
     {/if}
+    <button on:click={func} style="color:white">Graj dalej</button>
 {:else}
     <h1>{title}</h1>
     <p>{description}</p>

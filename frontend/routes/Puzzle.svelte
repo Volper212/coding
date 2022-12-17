@@ -23,6 +23,7 @@
             description={puzzle.description}
             code={puzzle.code}
             _id={puzzle._id}
+            func={loadPuzzle}
         />
     {:else if puzzle.type === PuzzleType.WhatResult}
         <WhatResult _id={puzzle._id} code={puzzle.code} />

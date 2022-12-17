@@ -117,12 +117,20 @@ async function main() {
                 if (puzzle.type != PuzzleType.FindBug) throw "Wrong type";
 
                 if (user == null) throw "";
-                await database.users.updateOne({ username }, { $push: { done: input.id } });
+
                 const oldPoints = { playerRating: user.rating, puzzleRating: puzzle.rating };
                 const newPoints = calculateRatingChanges(
                     oldPoints.playerRating,
                     oldPoints.puzzleRating,
                     puzzle.bugLine != input.line
+                );
+                await database.users.updateOne(
+                    { username },
+                    { $inc: { rating: newPoints.player } }
+                );
+                await database.puzzles.updateOne(
+                    { _id: new ObjectId(input.id) },
+                    { $inc: { rating: newPoints.puzzle } }
                 );
                 return {
                     ...oldPoints,
