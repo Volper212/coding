@@ -9,7 +9,7 @@ import makeUserProcedure from "./util/userProdecure";
 import makeExampleRouter from "./routers/example";
 import { PuzzleType } from "../shared/types";
 import { z } from "zod";
-import type { WithId } from "mongodb";
+import { ObjectId, type WithId } from "mongodb";
 
 const flatness = 100;
 
@@ -96,6 +96,18 @@ async function main() {
                 }
             }
         }),
+        findBugCheck: userProcedure
+            .input(z.object({ id: z.string(), line: z.number() }))
+            .query(async ({ ctx: { username }, input }) => {
+                const puzzle = await database.puzzles.findOne({ _id: new ObjectId(input.id) });
+                const user = await database.users.findOne({ username });
+                if (puzzle == null) throw "No puzzle found";
+                if (puzzle.type != PuzzleType.FindBug) throw "Wrong type";
+                if (puzzle.bugLine != input.line)
+                    return { ...puzzle, userRating: user?.rating, success: true };
+
+                return { ...puzzle, userRating: user?.rating, success: false };
+            }),
     });
 
     const app = express();

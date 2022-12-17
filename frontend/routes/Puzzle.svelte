@@ -5,7 +5,7 @@
     import { PuzzleType } from "shared/types";
 
     let puzzle: AwaitableReturnType<typeof getNextPuzzle>;
-    
+
     const getNextPuzzle = api.startPuzzle.query;
 
     loadPuzzle();
@@ -17,7 +17,12 @@
 
 {#if puzzle}
     {#if puzzle.type === PuzzleType.FindBug}
-        <FindBug title={puzzle.title} description={puzzle.description} code={puzzle.code} />
+        <FindBug
+            title={puzzle.title}
+            description={puzzle.description}
+            code={puzzle.code}
+            _id={puzzle._id}
+        />
     {/if}
 {:else}
     <p>Brak zadań</p>
