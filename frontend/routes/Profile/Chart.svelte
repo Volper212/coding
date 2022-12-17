@@ -13,8 +13,8 @@
 
     ChartJS.register(Title, Tooltip, Legend, PointElement, RadialLinearScale, LineElement);
 
-    let x: any[] = [];
     export let userData: any[] = [];
+    console.log(userData)
 
     const data = {
         labels: ["Skadnia JS", "Algorytmy", "Analiza kodu"],

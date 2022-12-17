@@ -4,6 +4,8 @@
     import api from "frontend/api";
 
     import Chart from "./Profile/Chart.svelte";
+
+    import RoundNumber from "../RoundNumber";
     
     import { getContext } from "svelte";
     const loginUser = getContext<string>("user");
@@ -68,7 +70,7 @@
                 <tr>
                     <td style={user[0] == loginUser ? "color: #00FF38" : ""}>{user[2]}</td>
                     <td style={user[0] == loginUser ? "color: #00FF38" : ""}>{user[0]}</td>
-                    <td style={user[0] == loginUser ? "color: #00FF38" : ""}>{user[1]}</td>
+                    <td style={user[0] == loginUser ? "color: #00FF38" : ""}>{RoundNumber(parseFloat(user[1]), 0)}</td>
                 </tr>
             {/each}
         </table>
@@ -80,7 +82,7 @@
                 {#if rank.length}
                     <span class="code">
                         Punkty rankingowe: <span class="color"
-                            >{rank.filter((user) => user[0] == loginUser)[0][1]}</span
+                            >{RoundNumber(rank.filter((user) => user[0] == loginUser)[0][1], 0)}</span
                         >
                     </span>
                     <br />
@@ -118,7 +120,7 @@
                         {#each task as puzzle}
                             <tr>
                                 <td>{puzzle[0]}</td>
-                                <td>{puzzle[1]}</td>
+                                <td>{RoundNumber(puzzle[1], 0)}</td>
                                 <td>{puzzle[2]}</td>
                             </tr>
                         {/each}
