@@ -35,15 +35,15 @@
         align-items: center;
         flex-wrap: wrap;
         padding: 2vw;
-    }
 
-    main > div {
-        width: 35%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-}
+        div {
+            width: 35%;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
 
     .name {
         color: white;
@@ -51,6 +51,13 @@
         font-size: 3vw;
         .on {
             color: $red-color;
+        }
+    }
+
+    .name:hover {
+        color: $red-color;
+        .on {
+            color: white;
         }
     }
 
