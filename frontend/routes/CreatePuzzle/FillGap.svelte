@@ -22,7 +22,25 @@
         end = 0;
 </script>
 
-<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.FillGap, title, description, syntaxRating, algorithmRating, analyseRating, code, line, "", 0, 0, [])}>
+<form
+    on:submit|preventDefault={() => {
+        CreatePuzzle(
+            PuzzleType.FillGap,
+            title,
+            description,
+            syntaxRating,
+            algorithmRating,
+            analyseRating,
+            code,
+            line,
+            "",
+            0,
+            0,
+            []
+        );
+        location.replace("/");
+    }}
+>
     <main>
         <div><PuzzleName bind:title /></div>
         <div><Description bind:description /></div>
@@ -34,7 +52,7 @@
     </div>
 
     <div>
-        <Answer bind:line />
+        <Answer label="Linia z luką" bind:line />
     </div>
 </form>
 
