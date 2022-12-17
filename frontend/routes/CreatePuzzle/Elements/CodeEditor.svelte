@@ -2,6 +2,17 @@
     export let code: string
 </script>
 
-Kod<textarea bind:value={code} />
+<div>
+    <span>Kod:</span>
+    <textarea bind:value={code} />
+</div>
 
-CodeEditor
+<style lang="scss">
+    div {
+        display: flex;
+        flex-direction: column;
+        textarea {
+            height: 20vw;
+        }
+    }
+</style>

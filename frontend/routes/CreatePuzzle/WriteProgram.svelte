@@ -6,7 +6,6 @@
     import PuzzleName from "./Elements/PuzzleName.svelte";
     import Description from "./Elements/Description.svelte";
     import Categories from "./Elements/Categories.svelte";
-    import SendButton from "./Elements/SendButton.svelte";
 
     let title = "",
         description = "",
@@ -36,8 +35,9 @@
             []
         )}
 >
-    <PuzzleName bind:title />
-    <Description bind:description />
+    <main>
+        <div><PuzzleName bind:title /></div>
+        <div><Description bind:description /></div>
     {#each tests as test}
         <label>
             Wejście:
@@ -54,9 +54,9 @@
             tests = [...tests, { input: "", output: "" }];
         }}>+</button
     >
-    <Categories bind:syntaxRating bind:algorithmRating bind:analyseRating />
-    <SendButton />
-    <button type="submit">Wyslij</button>
+        <div><Categories bind:syntaxRating bind:algorithmRating bind:analyseRating /></div>
+        <div><button type="submit">Wyślij</button></div>
+    </main>
 </form>
 
 <style lang="scss">

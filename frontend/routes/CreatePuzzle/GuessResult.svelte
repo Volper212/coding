@@ -5,7 +5,6 @@
 
     import PuzzleName from "./Elements/PuzzleName.svelte";
     import Categories from "./Elements/Categories.svelte";
-    import SendButton from "./Elements/SendButton.svelte";
 
     import CodeEditor from "./Elements/CodeEditor.svelte";
 
@@ -19,33 +18,21 @@
         result = "";
 </script>
 
-<h2>Guess</h2>
+<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.WhatResult, title, "", syntaxRating, algorithmRating, analyseRating, code, line, "", 0, 0, [])}>
+    <main>
+        <div><PuzzleName bind:title /></div>
+        <div style="width: 30vw;" />
+        <div><Categories bind:syntaxRating bind:algorithmRating bind:analyseRating /></div>
+        <div><button type="submit">Wyślij</button></div>
+    </main>
 
-<form
-    on:submit|preventDefault={() =>
-        CreatePuzzle(
-            PuzzleType.WhatResult,
-            title,
-            "",
-            syntaxRating,
-            algorithmRating,
-            analyseRating,
-            code,
-            0,
-            result,
-            0,
-            0,
-            []
-        )}
->
-    <PuzzleName bind:title />
-    <Categories bind:syntaxRating bind:algorithmRating bind:analyseRating />
-    <SendButton />
+    <div class="code">
+        <CodeEditor bind:code />
+    </div>
 
-    <CodeEditor bind:code />
-
-    <label>Wynik<input bind:value={result} /></label>
-    <button type="submit">Wyslij</button>
+    <div>
+        <label>Wynik<input bind:value={result} /></label>
+    </div>
 </form>
 
 <style lang="scss">

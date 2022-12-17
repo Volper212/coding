@@ -2,6 +2,15 @@
     export let description: string
 </script>
 
-Opis<textarea bind:value={description} />
+<div>
+    <span>Opis:</span>
+    <textarea bind:value={description} />
+</div>
 
-Description
+<style lang="scss">
+    div {
+        width: 30vw;
+        display: flex;
+        flex-direction: column;
+    }
+</style>

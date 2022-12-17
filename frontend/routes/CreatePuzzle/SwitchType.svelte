@@ -8,3 +8,23 @@
     <div on:click={() => puzzleType = 2}>{"<Uzupełnij_lukę />"}</div>
     <div on:click={() => puzzleType = 3}>{"<Co_się_wyświetli />"}</div>
 </div>
+
+<style lang="scss">
+    @use "frontend/variables.scss" as *;
+
+    #switch {
+        font-size: 1.2vw;
+        width: 60vw;
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 1vw;
+        border-bottom: 1px solid $primary-color;
+
+        div {
+            cursor: pointer;
+        &:hover {
+            color: rgba($button-color, 0.8);
+        }
+        }
+    }
+</style>
