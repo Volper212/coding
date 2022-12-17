@@ -6,7 +6,6 @@
     import PuzzleName from "./Elements/PuzzleName.svelte";
     import Description from "./Elements/Description.svelte";
     import Categories from "./Elements/Categories.svelte";
-    import SendButton from "./Elements/SendButton.svelte";
 
     let title = "",
         description = "",
@@ -15,14 +14,13 @@
         analiseRating = false;
 </script>
 
-<h2>Program</h2>
-
 <form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.WriteProgram, title, description, syntaxRating, algorithmRating, analiseRating, "", 0, "", 0, 0)}>
-    <PuzzleName bind:title />
-    <Description bind:description />
-    <Categories bind:syntaxRating bind:algorithmRating bind:analiseRating />
-    <SendButton />
-    <button type="submit">Wyslij</button>
+    <main>
+        <div><PuzzleName bind:title /></div>
+        <div><Description bind:description /></div>
+        <div><Categories bind:syntaxRating bind:algorithmRating bind:analiseRating /></div>
+        <div><button type="submit">Wyślij</button></div>
+    </main>
 </form>
 
 <style lang="scss">
