@@ -17,7 +17,7 @@
 </script>
 
 <form
-    on:submit|preventDefault={() =>
+    on:submit|preventDefault={() => {
         CreatePuzzle(
             PuzzleType.WriteProgram,
             title,
@@ -31,29 +31,31 @@
             0,
             0,
             tests
-        )}
+        );
+        location.replace("/");
+    }}
 >
     <main>
         <div><PuzzleName bind:title /></div>
         <div><Description bind:description /></div>
-    {#each tests as test}
-        <label>
-            Wejście:
-            <input type="text" bind:value={test.input} />
-        </label>
-        <label>
-            Wyjście:
-            <input type="text" bind:value={test.output} />
-        </label>
-    {/each}
-    <button
-        type="button"
-        on:click={() => {
-            tests = [...tests, { input: "", output: "" }];
-        }}>+</button
-    >
+        {#each tests as test}
+            <label>
+                Wejście:
+                <input type="text" bind:value={test.input} />
+            </label>
+            <label>
+                Wyjście:
+                <input type="text" bind:value={test.output} />
+            </label>
+        {/each}
+        <button
+            type="button"
+            on:click={() => {
+                tests = [...tests, { input: "", output: "" }];
+            }}>+</button
+        >
         <div><Categories bind:syntaxRating bind:algorithmRating bind:analyseRating /></div>
-        <div><button type="submit">Wyślij</button>
+        <div><button type="submit">Wyślij</button></div>
     </main>
 </form>
 

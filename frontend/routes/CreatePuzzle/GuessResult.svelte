@@ -19,7 +19,7 @@
 </script>
 
 <form
-    on:submit|preventDefault={() =>
+    on:submit|preventDefault={() => {
         CreatePuzzle(
             PuzzleType.WhatResult,
             title,
@@ -33,7 +33,9 @@
             0,
             0,
             []
-        )}
+        );
+        location.replace("/");
+    }}
 >
     <main>
         <div><PuzzleName bind:title /></div>
