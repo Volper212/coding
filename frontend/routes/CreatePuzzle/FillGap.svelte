@@ -1,6 +1,6 @@
 <script type="ts">
     import { PuzzleType } from "../../../shared/types";
-    
+
     import CreatePuzzle from "../CreatePuzze";
 
     import PuzzleName from "./Elements/PuzzleName.svelte";
@@ -18,12 +18,29 @@
         algorithmRating = false,
         analiseRating = false,
         code = "",
-        line = 0;
+        line = 0,
+        start = 0,
+        end = 0;
 </script>
 
 <h2>Gap</h2>
 
-<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.FillGap, title, description, syntaxRating, algorithmRating, analiseRating, code, line, "", 0, 0)}>
+<form
+    on:submit|preventDefault={() =>
+        CreatePuzzle(
+            PuzzleType.FillGap,
+            title,
+            description,
+            syntaxRating,
+            algorithmRating,
+            analiseRating,
+            code,
+            line,
+            "",
+            start,
+            end
+        )}
+>
     <PuzzleName bind:title />
     <Description bind:description />
     <Categories bind:syntaxRating bind:algorithmRating bind:analiseRating />
@@ -31,8 +48,9 @@
 
     <CodeEditor bind:code />
 
-    <Answer bind:line />
-
+    <Answer bind:line label="Linia z luką" />
+    <label>Pierwszy znak<input type="number" bind:value={start} /></label>
+    <label>Ostatni znak<input type="number" bind:value={end} /></label>
     <button type="submit">Wyslij</button>
 </form>
 
