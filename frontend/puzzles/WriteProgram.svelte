@@ -6,7 +6,7 @@
     export let _id: string;
     export let title: string;
     export let description: string;
-
+    export let func: () => void;
     let inputs: string[];
     let code = "";
     let res: AwaitableReturnType<typeof api.checkProgram.query>;
@@ -36,6 +36,7 @@
             puzzleChange={res.puzzle}
         />
     {/if}
+    <button on:click={func} style="color:white">Graj dalej</button>
 {:else}
     <h1>{title}</h1>
     <p>{description}</p>
