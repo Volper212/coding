@@ -3,10 +3,10 @@
 </script>
 
 <div id="switch">
-    <div on:click={() => puzzleType = 0}>{"<Znajdź_błąd />"}</div>
-    <div on:click={() => puzzleType = 1}>{"<Napisz_program />"}</div>
-    <div on:click={() => puzzleType = 2}>{"<Uzupełnij_lukę />"}</div>
-    <div on:click={() => puzzleType = 3}>{"<Co_się_wyświetli />"}</div>
+    <div on:click={() => puzzleType = 0} style={puzzleType == 0 ? "color: #00FF38" : ""}>{"<Znajdź_błąd />"}</div>
+    <div on:click={() => puzzleType = 1} style={puzzleType == 1 ? "color: #00FF38" : ""}>{"<Napisz_program />"}</div>
+    <div on:click={() => puzzleType = 2} style={puzzleType == 2 ? "color: #00FF38" : ""}>{"<Uzupełnij_lukę />"}</div>
+    <div on:click={() => puzzleType = 3} style={puzzleType == 3 ? "color: #00FF38" : ""}>{"<Co_się_wyświetli />"}</div>
 </div>
 
 <style lang="scss">
