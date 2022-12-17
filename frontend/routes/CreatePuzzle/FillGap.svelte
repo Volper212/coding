@@ -52,7 +52,7 @@
     </div>
 
     <div>
-        <Answer bind:start bind:end label="Linia z luką" bind:line />
+        <Answer fill={true} bind:start bind:end label="Linia z luką" bind:line />
     </div>
 </form>
 
