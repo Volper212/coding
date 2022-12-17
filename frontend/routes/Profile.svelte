@@ -76,13 +76,13 @@
             <div>
                 {#if rank.length}
                     <span class="code">
-                        liczba punktów: <span class="color"
+                        Punkty rankingowe: <span class="color"
                             >{rank.filter((user) => user[0] == loginUser)[0][1]}</span
                         >
                     </span>
                     <br />
                     <span class="code">
-                        miejsce w ogólnym rankingu: <span class="color"
+                        Miejsce w ogólnym rankingu: <span class="color"
                             >{rank.filter((user) => user[0] == loginUser)[0][2]}</span
                         >
                     </span>
