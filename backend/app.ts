@@ -66,6 +66,7 @@ async function main() {
                     author: username,
                     ...input,
                     rating: 1000,
+                    views: 0,
                 });
             }),
         startPuzzle: userProcedure.query(async ({ ctx: { username } }) => {
@@ -88,6 +89,7 @@ async function main() {
                 const ratingDifference = puzzle.rating - user.rating;
                 const probability = Math.exp(-0.5 * (ratingDifference / flatness) ** 2) / flatness; // Normal distribution
                 if (Math.random() < probability * 30) {
+                    await database.puzzles.updateOne({ _id: puzzle._id }, { $inc: { views: 1 } });
                     const { rating, author, ...rawPuzzle } = puzzle;
                     switch (rawPuzzle.type) {
                         case PuzzleType.FindBug: {

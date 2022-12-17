@@ -51,6 +51,6 @@
     }
 
     .on {
-        color: #F40000;
+        color: $red-color;
     }
 </style>
