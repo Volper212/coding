@@ -168,7 +168,11 @@ async function main() {
         getUsers: userProcedure.query(() => {
             return database.users.find().toArray();
         }),
-
+        getLoginEmail: userProcedure.query(async ({ ctx: { username } }) => {
+            const user = await database.users.findOne({ username });
+            if (user == null) throw "";
+            return [username, user.email];
+        }),
         getPuzzles: userProcedure
             .input(z.object({ type: z.number(), author: z.string() }))
             .query(({ input: { type, author } }) => {
