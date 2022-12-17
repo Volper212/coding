@@ -16,14 +16,14 @@ export default async function getDatabase() {
 
 export type Database = AwaitableReturnType<typeof getDatabase>;
 
-type User = {
+export type User = {
     username: string;
     email: string;
     passwordHash: string;
     rating: number;
     syntaxRating: number;
     algorithmRating: number;
-    analiseRating: number;
+    analyseRating: number;
     done: string[];
 };
 
@@ -39,5 +39,5 @@ export type Puzzle = {
     author: string;
     syntaxRating: boolean;
     algorithmRating: boolean;
-    analiseRating: boolean;
+    analyseRating: boolean;
 } & RawPuzzle;

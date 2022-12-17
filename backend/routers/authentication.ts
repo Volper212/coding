@@ -27,7 +27,7 @@ export default function makeAuthenticationRouter(database: Database, getLoggedIn
                         rating: 1000,
                         syntaxRating: 1000,
                         algorithmRating: 1000,
-                        analiseRating: 1000,
+                        analyseRating: 1000,
                         done: [],
                     }),
                     logIn(res, username),

@@ -14,16 +14,32 @@
     let title = "",
         syntaxRating = false,
         algorithmRating = false,
-        analiseRating = false,
+        analyseRating = false,
         code = "",
         line = 0;
 </script>
 
 <h2>Guess</h2>
 
-<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.WhatResult, title, "", syntaxRating, algorithmRating, analiseRating, code, line, "", 0, 0)}>
+<form
+    on:submit|preventDefault={() =>
+        CreatePuzzle(
+            PuzzleType.WhatResult,
+            title,
+            "",
+            syntaxRating,
+            algorithmRating,
+            analyseRating,
+            code,
+            line,
+            "",
+            0,
+            0,
+            []
+        )}
+>
     <PuzzleName bind:title />
-    <Categories bind:syntaxRating bind:algorithmRating bind:analiseRating />
+    <Categories bind:syntaxRating bind:algorithmRating bind:analyseRating />
     <SendButton />
 
     <CodeEditor bind:code />

@@ -7,19 +7,20 @@ export default async function CreatePuzzle(
     description: string,
     syntaxRating: boolean,
     algorithmRating: boolean,
-    analiseRating: boolean,
+    analyseRating: boolean,
     code: string,
     line: number,
     result: string,
     start: number,
-    end: number
+    end: number,
+    tests: { input: string; output: string }[]
 ) {
     switch (type) {
         case PuzzleType.FindBug:
             api.createPuzzle.query({
                 syntaxRating,
                 algorithmRating,
-                analiseRating,
+                analyseRating,
                 title,
                 type,
                 description,
@@ -31,10 +32,11 @@ export default async function CreatePuzzle(
             api.createPuzzle.query({
                 syntaxRating,
                 algorithmRating,
-                analiseRating,
+                analyseRating,
                 title,
                 type,
-                description /*inputs outputs*/,
+                description,
+                tests,
             });
             break;
         case PuzzleType.FillGap:
@@ -51,7 +53,7 @@ export default async function CreatePuzzle(
             api.createPuzzle.query({
                 syntaxRating,
                 algorithmRating,
-                analiseRating,
+                analyseRating,
                 description,
                 title,
                 type,
@@ -66,7 +68,7 @@ export default async function CreatePuzzle(
             api.createPuzzle.query({
                 syntaxRating,
                 algorithmRating,
-                analiseRating,
+                analyseRating,
                 title,
                 type,
                 code,

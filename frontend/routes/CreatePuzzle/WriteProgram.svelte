@@ -12,15 +12,49 @@
         description = "",
         syntaxRating = false,
         algorithmRating = false,
-        analiseRating = false;
+        analyseRating = false;
+
+    let tests: { input: string; output: string }[] = [];
 </script>
 
 <h2>Program</h2>
 
-<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.WriteProgram, title, description, syntaxRating, algorithmRating, analiseRating, "", 0, "", 0, 0)}>
+<form
+    on:submit|preventDefault={() =>
+        CreatePuzzle(
+            PuzzleType.WriteProgram,
+            title,
+            description,
+            syntaxRating,
+            algorithmRating,
+            analyseRating,
+            "",
+            0,
+            "",
+            0,
+            0,
+            []
+        )}
+>
     <PuzzleName bind:title />
     <Description bind:description />
-    <Categories bind:syntaxRating bind:algorithmRating bind:analiseRating />
+    {#each tests as test}
+        <label>
+            Wejście:
+            <input type="text" bind:value={test.input} />
+        </label>
+        <label>
+            Wyjście:
+            <input type="text" bind:value={test.output} />
+        </label>
+    {/each}
+    <button
+        type="button"
+        on:click={() => {
+            tests = [...tests, { input: "", output: "" }];
+        }}>+</button
+    >
+    <Categories bind:syntaxRating bind:algorithmRating bind:analyseRating />
     <SendButton />
     <button type="submit">Wyslij</button>
 </form>
