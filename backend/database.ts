@@ -24,7 +24,7 @@ type User = {
     syntaxRating: number;
     algorithmRating: number;
     analiseRating: number;
-    done: Set<string>;
+    done: string[];
 };
 
 type Session = {

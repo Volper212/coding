@@ -9,7 +9,7 @@ import makeUserProcedure from "./util/userProdecure";
 import makeExampleRouter from "./routers/example";
 import { PuzzleType } from "../shared/types";
 import { z } from "zod";
-import type { WithId } from "mongodb";
+import { ObjectId, type WithId } from "mongodb";
 
 const flatness = 100;
 
@@ -72,7 +72,16 @@ async function main() {
             if (user == null) throw new Error("User not found");
             while (true) {
                 const puzzle = (await database.puzzles
-                    .aggregate([{ $sample: { size: 1 } }])
+                    .aggregate([
+                        {
+                            $match: {
+                                _id: {
+                                    $not: { $in: user.done.map((value) => new ObjectId(value)) },
+                                },
+                            },
+                        },
+                        { $sample: { size: 1 } },
+                    ])
                     .next()) as WithId<Puzzle> | null;
                 if (puzzle == null) return;
                 const ratingDifference = puzzle.rating - user.rating;
@@ -96,6 +105,21 @@ async function main() {
                 }
             }
         }),
+
+        checkWhatResult: userProcedure
+            .input(z.object({ _id: z.string(), guess: z.string() }))
+            .query(async ({ ctx: { username }, input: { _id, guess } }) => {
+                const puzzle = await database.puzzles.findOne({ _id: new ObjectId(_id) });
+                if (puzzle == null) throw new Error("Puzzle not found");
+                if (puzzle.type !== PuzzleType.WhatResult)
+                    throw new Error("Puzzle is not WhatResult");
+                const { result } = puzzle;
+                await database.users.updateOne({ username }, { $push: { done: _id } });
+                if (guess === result) {
+                    return puzzle;
+                }
+                return false;
+            }),
     });
 
     const app = express();
