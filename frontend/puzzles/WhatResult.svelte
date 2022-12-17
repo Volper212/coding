@@ -5,7 +5,7 @@
 
     export let _id: string;
     export let code: string;
-
+    export let func: () => void;
     let guess = "";
     let res: AwaitableReturnType<typeof api.checkWhatResult.query>;
 
@@ -41,4 +41,5 @@
             puzzleChange={res.puzzle}
         />
     {/if}
+    <button on:click={func} style="color:white">Graj dalej</button>
 {/if}
