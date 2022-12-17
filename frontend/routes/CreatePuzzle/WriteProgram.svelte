@@ -16,8 +16,6 @@
     let tests: { input: string; output: string }[] = [];
 </script>
 
-<h2>Program</h2>
-
 <form
     on:submit|preventDefault={() =>
         CreatePuzzle(
@@ -55,7 +53,7 @@
         }}>+</button
     >
         <div><Categories bind:syntaxRating bind:algorithmRating bind:analyseRating /></div>
-        <div><button type="submit">Wyślij</button></div>
+        <div><button type="submit">Wyślij</button>
     </main>
 </form>
 
