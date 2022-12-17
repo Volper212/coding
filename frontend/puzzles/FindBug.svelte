@@ -17,10 +17,20 @@
 {#if finish}
     {#if res.success}
         Sukces
-        <Ratings points={res.userRating} puzzlePoints={res.rating} />
+        <Ratings
+            points={res.playerRating}
+            puzzlePoints={res.puzzleRating}
+            change={res.player}
+            puzzleChange={res.puzzle}
+        />
     {:else}
         Tym razem ci się nie udało
-        <Ratings points={res.userRating} puzzlePoints={res.rating} />
+        <Ratings
+            points={res.playerRating}
+            puzzlePoints={res.puzzleRating}
+            change={res.player}
+            puzzleChange={res.puzzle}
+        />
     {/if}
 {:else}
     <h1>{title}</h1>

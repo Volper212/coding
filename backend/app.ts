@@ -10,6 +10,7 @@ import makeExampleRouter from "./routers/example";
 import { PuzzleType } from "../shared/types";
 import { z } from "zod";
 import { ObjectId, type WithId } from "mongodb";
+import { calculateRatingChanges } from "./elo";
 
 const flatness = 100;
 
@@ -112,10 +113,20 @@ async function main() {
                 const user = await database.users.findOne({ username });
                 if (puzzle == null) throw "No puzzle found";
                 if (puzzle.type != PuzzleType.FindBug) throw "Wrong type";
-                if (puzzle.bugLine != input.line)
-                    return { ...puzzle, userRating: user?.rating, success: true };
 
-                return { ...puzzle, userRating: user?.rating, success: false };
+                if (user == null) throw "";
+                await database.users.updateOne({ username }, { $push: { done: input.id } });
+                const oldPoints = { playerRating: user.rating, puzzleRating: puzzle.rating };
+                const newPoints = calculateRatingChanges(
+                    oldPoints.playerRating,
+                    oldPoints.puzzleRating,
+                    puzzle.bugLine != input.line
+                );
+                return {
+                    ...oldPoints,
+                    ...newPoints,
+                    success: puzzle.bugLine != input.line,
+                };
             }),
 
         checkWhatResult: userProcedure
