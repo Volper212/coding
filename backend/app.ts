@@ -3,7 +3,7 @@ import { makeRouter, makeTRPCExpressMiddleware } from "./trpc";
 import dotenv from "dotenv";
 import makeAuthenticationRouter from "./routers/authentication";
 import type { AwaitableReturnType } from "./util/AwaitableReturnType";
-import getDatabase, { type Puzzle } from "./database";
+import getDatabase, { type Puzzle, type User } from "./database";
 import makeGetLoggedIn from "./util/getLoggedIn";
 import makeUserProcedure from "./util/userProdecure";
 import makeExampleRouter from "./routers/example";
@@ -109,65 +109,25 @@ async function main() {
         findBugCheck: userProcedure
             .input(z.object({ id: z.string(), line: z.number() }))
             .query(async ({ ctx: { username }, input }) => {
-                const puzzle = await database.puzzles.findOne({ _id: new ObjectId(input.id) });
-                const user = await database.users.findOne({ username });
-                if (puzzle == null) throw "No puzzle found";
+                const puzzle = await getPuzzle(input.id);
                 if (puzzle.type != PuzzleType.FindBug) throw "Wrong type";
 
-                if (user == null) throw "";
+                const success = puzzle.bugLine === input.line;
 
-                const oldPoints = { playerRating: user.rating, puzzleRating: puzzle.rating };
-                const newPoints = calculateRatingChanges(
-                    oldPoints.playerRating,
-                    oldPoints.puzzleRating,
-                    puzzle.bugLine != input.line
-                );
-                updateRatings(username, input.id, newPoints.player, newPoints.puzzle);
-
-                return {
-                    ...oldPoints,
-                    ...newPoints,
-                    success: puzzle.bugLine != input.line,
-                };
+                return results(puzzle, success, username, input.id);
             }),
 
         checkWhatResult: userProcedure
             .input(z.object({ _id: z.string(), guess: z.string() }))
             .query(async ({ ctx: { username }, input: { _id, guess } }) => {
-                const puzzle = await database.puzzles.findOne({ _id: new ObjectId(_id) });
-                const user = await database.users.findOne({ username });
-                if (puzzle == null) throw "No puzzle found";
+                const puzzle = await getPuzzle(_id);
                 if (puzzle.type != PuzzleType.WhatResult) throw "Wrong type";
-
-                if (user == null) throw "";
 
                 const success = guess === puzzle.result;
 
-                const oldPoints = { playerRating: user.rating, puzzleRating: puzzle.rating };
-                const newPoints = calculateRatingChanges(
-                    oldPoints.playerRating,
-                    oldPoints.puzzleRating,
-                    success
-                );
-                await database.users.updateOne(
-                    { username },
-                    { $inc: { rating: newPoints.player } }
-                );
-                await database.puzzles.updateOne(
-                    { _id: new ObjectId(_id) },
-                    { $inc: { rating: newPoints.puzzle } }
-                );
-                return {
-                    ...oldPoints,
-                    ...newPoints,
-                    success,
-                };
+                return results(puzzle, success, username, _id);
             }),
     });
-    async function updateRatings(username: string, id: string, player: number, puzzle: number) {
-        await database.users.updateOne({ username }, { $inc: { rating: player } });
-        await database.puzzles.updateOne({ _id: new ObjectId(id) }, { $inc: { rating: puzzle } });
-    }
     const app = express();
     app.use(express.static("frontend/public"));
     app.use("/trpc", makeTRPCExpressMiddleware(router));
@@ -177,6 +137,38 @@ async function main() {
     app.listen(process.env.PORT ?? 3000);
 
     return router;
+
+    async function getPuzzle(id: string) {
+        const puzzle = await database.puzzles.findOne({ _id: new ObjectId(id) });
+        if (puzzle == null) throw "No puzzle found";
+        return puzzle;
+    }
+
+    async function results(puzzle: Puzzle, success: boolean, username: string, _id: string) {
+        const user = await database.users.findOne({ username });
+        if (user == null) throw "";
+        if (user.done.includes(_id)) throw "";
+
+        const oldPoints = { playerRating: user.rating, puzzleRating: puzzle.rating };
+        const newPoints = calculateRatingChanges(
+            oldPoints.playerRating,
+            oldPoints.puzzleRating,
+            success
+        );
+        await database.users.updateOne(
+            { username },
+            { $inc: { rating: newPoints.player }, $push: { done: _id } }
+        );
+        await database.puzzles.updateOne(
+            { _id: new ObjectId(_id) },
+            { $inc: { rating: newPoints.puzzle } }
+        );
+        return {
+            ...oldPoints,
+            ...newPoints,
+            success,
+        };
+    }
 }
 
 dotenv.config();

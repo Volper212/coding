@@ -1,15 +1,16 @@
 <script lang="ts">
-    import type { Puzzle } from "backend/database";
+    import type { AwaitableReturnType } from "backend/util/AwaitableReturnType";
     import api from "frontend/api";
+    import Ratings from "./Ratings.svelte";
 
     export let _id: string;
     export let code: string;
 
     let guess = "";
-    let guessedCorrectly: Puzzle | false;
+    let res: AwaitableReturnType<typeof api.checkWhatResult.query>;
 
     async function check() {
-        guessedCorrectly = await api.checkWhatResult.query({ _id, guess });
+        res = await api.checkWhatResult.query({ _id, guess });
     }
 </script>
 
@@ -22,10 +23,22 @@
     <button type="submit">Sprawdź</button>
 </form>
 
-{#if guessedCorrectly !== undefined}
-    {#if guessedCorrectly}
-        <output>Dobrze</output>
+{#if res !== undefined}
+    {#if res.success}
+        Sukces
+        <Ratings
+            points={res.playerRating}
+            puzzlePoints={res.puzzleRating}
+            change={res.player}
+            puzzleChange={res.puzzle}
+        />
     {:else}
-        <output>Źle</output>
+        Tym razem ci się nie udało
+        <Ratings
+            points={res.playerRating}
+            puzzlePoints={res.puzzleRating}
+            change={res.player}
+            puzzleChange={res.puzzle}
+        />
     {/if}
 {/if}

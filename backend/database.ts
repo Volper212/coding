@@ -16,7 +16,7 @@ export default async function getDatabase() {
 
 export type Database = AwaitableReturnType<typeof getDatabase>;
 
-type User = {
+export type User = {
     username: string;
     email: string;
     passwordHash: string;
