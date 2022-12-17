@@ -12,6 +12,8 @@ import { z } from "zod";
 import { ObjectId, type WithId } from "mongodb";
 import { calculateRatingChanges } from "./elo";
 
+import { getContext } from "svelte";
+
 const flatness = 100;
 
 export const rawPuzzle = z
@@ -152,6 +154,17 @@ async function main() {
                     return puzzle;
                 }
                 return false;
+            }),
+        
+        getUsers: userProcedure
+            .query(() => {
+                return database.users.find().toArray();
+            }),
+        
+        getPuzzles: userProcedure
+            .input(z.object({type: z.number(), author: z.string()}))
+            .query(({input: {type, author}}) => {
+                return database.puzzles.find({type, author}).toArray();
             }),
     });
 
