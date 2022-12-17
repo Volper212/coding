@@ -34,8 +34,8 @@
             code,
             line,
             "",
-            0,
-            0,
+            start,
+            end,
             []
         );
         location.replace("/");
@@ -52,7 +52,7 @@
     </div>
 
     <div>
-        <Answer label="Linia z luką" bind:line />
+        <Answer bind:start bind:end label="Linia z luką" bind:line />
     </div>
 </form>
 
