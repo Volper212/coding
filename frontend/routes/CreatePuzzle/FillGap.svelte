@@ -51,7 +51,7 @@
         <CodeEditor bind:code />
     </div>
 
-    <div>
+    <div style="margin-top: 2vw">
         <Answer fill={true} bind:start bind:end label="Linia z luką" bind:line />
     </div>
 </form>

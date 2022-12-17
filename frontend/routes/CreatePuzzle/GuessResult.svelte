@@ -48,7 +48,7 @@
         <CodeEditor bind:code />
     </div>
 
-    <div>
+    <div style="margin-top: 2vw">
         <label>Wynik<input bind:value={result} /></label>
     </div>
 </form>

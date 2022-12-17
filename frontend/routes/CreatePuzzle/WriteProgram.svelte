@@ -38,27 +38,42 @@
     <main>
         <div><PuzzleName bind:title /></div>
         <div><Description bind:description /></div>
+        <div><Categories bind:syntaxRating bind:algorithmRating bind:analyseRating /></div>
+        <div><button type="submit">Wyślij</button></div>
+    </main>
+
+    <div class="inOut">
         {#each tests as test}
-            <label>
-                Wejście:
-                <input type="text" bind:value={test.input} />
-            </label>
-            <label>
-                Wyjście:
-                <input type="text" bind:value={test.output} />
-            </label>
+            <div>
+                <label>
+                    Wejście:
+                    <input type="text" bind:value={test.input} />
+                </label>
+                <label>
+                    Wyjście:
+                    <input type="text" bind:value={test.output} />
+                </label>
+            </div>
         {/each}
+
         <button
             type="button"
             on:click={() => {
                 tests = [...tests, { input: "", output: "" }];
             }}>+</button
         >
-        <div><Categories bind:syntaxRating bind:algorithmRating bind:analyseRating /></div>
-        <div><button type="submit">Wyślij</button></div>
-    </main>
+    </div>
 </form>
 
 <style lang="scss">
     @use "./Type.scss" as *;
+
+    .inOut {
+        > div {
+            display: flex;
+            flex-flow: column;
+
+            margin-bottom: 2vw;
+        }
+    }
 </style>

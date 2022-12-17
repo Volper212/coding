@@ -49,7 +49,7 @@
         <CodeEditor bind:code />
     </div>
 
-    <div>
+    <div style="margin-top: 2vw">
         <Answer label={"Linia z błędem"} bind:line />
     </div>
 </form>
