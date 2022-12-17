@@ -107,6 +107,18 @@ async function main() {
                 }
             }
         }),
+        findBugCheck: userProcedure
+            .input(z.object({ id: z.string(), line: z.number() }))
+            .query(async ({ ctx: { username }, input }) => {
+                const puzzle = await database.puzzles.findOne({ _id: new ObjectId(input.id) });
+                const user = await database.users.findOne({ username });
+                if (puzzle == null) throw "No puzzle found";
+                if (puzzle.type != PuzzleType.FindBug) throw "Wrong type";
+                if (puzzle.bugLine != input.line)
+                    return { ...puzzle, userRating: user?.rating, success: true };
+
+                return { ...puzzle, userRating: user?.rating, success: false };
+            }),
 
         checkWhatResult: userProcedure
             .input(z.object({ _id: z.string(), guess: z.string() }))

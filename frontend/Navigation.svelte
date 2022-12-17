@@ -15,6 +15,6 @@
 <Route path="/example">
     <Example />
 </Route>
-<Route path="/puzzle">
+<Route path="/puzzle"> 
     <Puzzle />
 </Route>
