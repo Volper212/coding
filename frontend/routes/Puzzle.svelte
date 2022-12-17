@@ -30,7 +30,12 @@
     {:else if puzzle.type === PuzzleType.WhatResult}
         <WhatResult func={loadPuzzle} _id={puzzle._id} code={puzzle.code} />
     {:else if puzzle.type === PuzzleType.WriteProgram}
-        <WriteProgram _id={puzzle._id} title={puzzle.title} description={puzzle.description} />
+        <WriteProgram
+            func={loadPuzzle}
+            _id={puzzle._id}
+            title={puzzle.title}
+            description={puzzle.description}
+        />
     {:else if puzzle.type === PuzzleType.FillGap}
         <FillGap
             description={puzzle.description}
