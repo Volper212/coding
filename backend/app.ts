@@ -210,8 +210,38 @@ async function main() {
         const user = await database.users.findOne({ username });
         if (user == null) throw "";
         if (user.done.includes(_id)) throw "";
-
         const oldPoints = { playerRating: user.rating, puzzleRating: puzzle.rating };
+
+        const syntaxPoints = calculateRatingChanges(
+            user.syntaxRating,
+            oldPoints.puzzleRating,
+            success
+        );
+        await database.users.updateOne(
+            { username },
+            { $inc: { syntaxRating: syntaxPoints.player }, $push: { done: _id } }
+        );
+
+        const algorithmRating = calculateRatingChanges(
+            user.algorithmRating,
+            oldPoints.puzzleRating,
+            success
+        );
+        await database.users.updateOne(
+            { username },
+            { $inc: { algorithmRating: algorithmRating.player }, $push: { done: _id } }
+        );
+
+        const analyseRating = calculateRatingChanges(
+            user.analyseRating,
+            oldPoints.puzzleRating,
+            success
+        );
+        await database.users.updateOne(
+            { username },
+            { $inc: { analyseRating: analyseRating.player }, $push: { done: _id } }
+        );
+
         const newPoints = calculateRatingChanges(
             oldPoints.playerRating,
             oldPoints.puzzleRating,
