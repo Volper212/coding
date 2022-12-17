@@ -1,12 +1,11 @@
 <script type="ts">
     import { PuzzleType } from "../../../shared/types";
-    
+
     import CreatePuzzle from "../CreatePuzze";
-    
+
     import PuzzleName from "./Elements/PuzzleName.svelte";
     import Description from "./Elements/Description.svelte";
     import Categories from "./Elements/Categories.svelte";
-    import SendButton from "./Elements/SendButton.svelte";
 
     import CodeEditor from "./Elements/CodeEditor.svelte";
 
@@ -16,24 +15,25 @@
         description = "",
         syntaxRating = false,
         algorithmRating = false,
-        analiseRating = false,
+        analyseRating = false,
         code = "",
         line = 0;
 </script>
 
-<h2>Mistake</h2>
+<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.FindBug, title, description, syntaxRating, algorithmRating, analyseRating, code, line, "", 0, 0, [])}>
+    <main>
+        <div><PuzzleName bind:title /></div>
+        <div><Description bind:description /></div>
+        <div><Categories bind:syntaxRating bind:algorithmRating bind:analyseRating /></div>
+        <div><button type="submit">Wyślij</button></div>
+    </main>
+    <div class="code">
+        <CodeEditor bind:code />
+    </div>
 
-<form on:submit|preventDefault={() => CreatePuzzle(PuzzleType.FindBug, title, description, syntaxRating, algorithmRating, analiseRating, code, line, "", 0, 0)}>
-    <PuzzleName bind:title />
-    <Description bind:description />
-    <Categories bind:syntaxRating bind:algorithmRating bind:analiseRating />
-    <SendButton />
-
-    <CodeEditor bind:code />
-
-    <Answer bind:line />
-
-    <button type="submit">Wyslij</button>
+    <div>
+        <Answer bind:line />
+    </div>
 </form>
 
 <style lang="scss">

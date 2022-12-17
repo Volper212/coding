@@ -1,11 +1,19 @@
 <script type="ts">
     export let syntaxRating: boolean,
         algorithmRating: boolean,
-        analiseRating: boolean;
+        analyseRating: boolean;
 </script>
 
-Składnia JS<input type="checkbox" bind:checked={syntaxRating} />
-Algorytmy<input type="checkbox" bind:checked={algorithmRating} />
-Analiza Kodu<input type="checkbox" bind:checked={analiseRating} />
+<main>
+    <span>Kategorie:</span>
+    <span><input type="checkbox" bind:checked={syntaxRating} />Składnia JS</span>
+    <span><input type="checkbox" bind:checked={algorithmRating} />Algorytmy</span>
+    <span><input type="checkbox" bind:checked={analyseRating} />Analiza kodu</span>
+</main>
 
-Categories
+<style lang="scss">
+    main {
+        display: flex;
+        flex-direction: column;
+    }
+</style>

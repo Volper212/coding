@@ -2,6 +2,18 @@
     export let title: string
 </script>
 
-Nazwa zadania<input bind:value={title} />
+<div>
+    Nazwa zadania:
+    <input bind:value={title} />
+</div>
 
-PuzzleName
+<style lang="scss">
+    div {
+        width: 30vw;
+        display: flex;
+        flex-direction: column;
+        input {
+            width: 100%;
+        }
+    }
+</style>
