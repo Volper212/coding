@@ -122,14 +122,8 @@ async function main() {
                     oldPoints.puzzleRating,
                     puzzle.bugLine != input.line
                 );
-                await database.users.updateOne(
-                    { username },
-                    { $inc: { rating: newPoints.player } }
-                );
-                await database.puzzles.updateOne(
-                    { _id: new ObjectId(input.id) },
-                    { $inc: { rating: newPoints.puzzle } }
-                );
+                updateRatings(username, input.id, newPoints.player, newPoints.puzzle);
+
                 return {
                     ...oldPoints,
                     ...newPoints,
@@ -170,7 +164,10 @@ async function main() {
                 };
             }),
     });
-
+    async function updateRatings(username: string, id: string, player: number, puzzle: number) {
+        await database.users.updateOne({ username }, { $inc: { rating: player } });
+        await database.puzzles.updateOne({ _id: new ObjectId(id) }, { $inc: { rating: puzzle } });
+    }
     const app = express();
     app.use(express.static("frontend/public"));
     app.use("/trpc", makeTRPCExpressMiddleware(router));
