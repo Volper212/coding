@@ -1,3 +1,7 @@
+# Coding Night
+
+This project was made by 4 people during [the 3rd Coding Night](https://www.fakro.pl/strefa-ucznia-i-studenta/aktualnosci/coding-night-w-elektryku/) in [ZSEM](https://zsem.edu.pl/) and won 1st place.
+
 ## Setup
 
 ```
